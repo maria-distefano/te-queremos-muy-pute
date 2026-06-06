@@ -191,13 +191,19 @@
       font-weight: 900;
       font-size: 16px;
       letter-spacing: .02em;
-      transition: transform .18s ease, filter .18s ease, box-shadow .18s ease;
+      transition: transform .18s ease, filter .18s ease, box-shadow .18s ease, opacity .18s ease;
     }
 
     button:hover {
       transform: translateY(-2px) scale(1.03);
       filter: brightness(1.14);
       box-shadow: 0 0 30px rgba(176,0,255,.7);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: .58;
+      transform: none;
     }
 
     button.secondary {
@@ -229,6 +235,17 @@
       background: rgba(123,44,255,.22);
     }
 
+    .option.correct {
+      border-color: rgba(156,255,203,.8);
+      background: rgba(156,255,203,.12);
+      box-shadow: 0 0 22px rgba(156,255,203,.18);
+    }
+
+    .option.wrong {
+      border-color: rgba(255,79,216,.65);
+      background: rgba(255,79,216,.10);
+    }
+
     .feedback {
       min-height: 28px;
       margin-top: 18px;
@@ -242,6 +259,16 @@
 
     .feedback.bad {
       color: var(--danger);
+    }
+
+    #nextChallengeBtn {
+      display: none;
+    }
+
+    #nextChallengeBtn.visible {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     #creditsScreen {
@@ -265,7 +292,12 @@
       background:
         radial-gradient(circle at center, rgba(123,44,255,.15), transparent 45%),
         rgba(0,0,0,.22);
-      overflow: hidden;
+      overflow: visible;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+      gap: 14px;
+      align-content: start;
     }
 
     .constellation::before {
@@ -276,43 +308,57 @@
       background-size: 34px 34px;
       opacity: .16;
       pointer-events: none;
+      z-index: 0;
+      border-radius: 24px;
     }
 
     .node {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      padding: 7px 10px;
+      position: relative;
+      z-index: 1;
+      min-height: 48px;
+      padding: 9px 12px;
       border-radius: 999px;
       color: #efe8ff;
       font-size: 13px;
-      font-weight: 800;
-      background: rgba(11, 8, 18, .72);
-      border: 1px solid rgba(216,182,255,.22);
+      font-weight: 850;
+      background: rgba(11, 8, 18, .76);
+      border: 1px solid rgba(216,182,255,.24);
       box-shadow: 0 0 14px rgba(123,44,255,.16);
       cursor: default;
       user-select: none;
       transition: transform .18s ease, color .18s ease, background .18s ease, box-shadow .18s ease, border-color .18s ease;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
       animation: floaty 4s ease-in-out infinite;
       animation-delay: var(--delay);
     }
 
-    .node::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 4px;
-      height: 4px;
+    .node-photo,
+    .node-initial {
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
-      transform: translate(-50%, -50%);
-      background: var(--violet-3);
-      opacity: .8;
-      z-index: -1;
-      box-shadow: 0 0 18px var(--violet-2);
+      flex: 0 0 auto;
+      border: 1px solid rgba(255,255,255,.25);
+      background: linear-gradient(135deg, var(--violet), var(--danger));
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 12px;
+      font-weight: 950;
+      object-fit: cover;
+    }
+
+    .node-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .node:hover {
-      transform: translate(-50%, -50%) scale(1.26);
+      transform: translateY(-3px) scale(1.04);
       color: white;
       background: rgba(123,44,255,.58);
       border-color: rgba(255,255,255,.45);
@@ -321,15 +367,15 @@
     }
 
     @keyframes floaty {
-      0%, 100% { margin-top: 0; }
-      50% { margin-top: -8px; }
+      0%, 100% { translate: 0 0; }
+      50% { translate: 0 -5px; }
     }
 
     .tooltip {
       position: fixed;
       z-index: 50;
       display: none;
-      width: min(280px, calc(100vw - 32px));
+      width: min(300px, calc(100vw - 32px));
       padding: 14px;
       border: 1px solid rgba(216,182,255,.4);
       border-radius: 18px;
@@ -345,8 +391,8 @@
     }
 
     .avatar {
-      width: 52px;
-      height: 52px;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
       display: grid;
       place-items: center;
@@ -355,6 +401,15 @@
       color: white;
       font-weight: 950;
       border: 2px solid rgba(255,255,255,.3);
+      object-fit: cover;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .tooltip strong {
@@ -390,12 +445,14 @@
       }
 
       .constellation {
-        min-height: 640px;
+        grid-template-columns: repeat(auto-fit, minmax(138px, 1fr));
+        gap: 10px;
+        padding: 16px;
       }
 
       .node {
         font-size: 12px;
-        padding: 6px 8px;
+        padding: 8px 10px;
       }
     }
   </style>
@@ -423,6 +480,9 @@
       <p id="challengeQuestion"></p>
       <div id="options" class="challenge-box"></div>
       <div id="feedback" class="feedback"></div>
+      <div class="actions">
+        <button id="nextChallengeBtn">Siguiente desgracia</button>
+      </div>
       <p class="tiny">Nota legal: este juego no mide inteligencia, solo paciencia.</p>
     </section>
 
@@ -442,7 +502,7 @@
         <div class="kicker">Archivo clasificado</div>
         <h2>El multiverso papudom</h2>
         <p>Estas son las personas que participaron de esta operación. Te desean feliz cumple y, lamentablemente, probablemente por muchos más.</p>
-        <p class="muted">Pasá el cursor sobre los nombres para ver el prontuario emocional.</p>
+        <p class="muted">Pasá el cursor sobre los nombres para ver el prontuario emocional. Los nombres ahora están en modo legible, porque superponerlos era muy artístico pero poco útil. El MOMA deberá esperar.</p>
       </div>
       <div id="constellation" class="constellation"></div>
     </section>
@@ -457,89 +517,348 @@
   </div>
 
   <script>
+    /*
+      PARA AGREGAR FOTOS:
+      1) Creá una carpeta llamada assets en el mismo lugar que este index.html.
+      2) Adentro, creá otra carpeta llamada avatars.
+      3) Guardá las fotos ahí, por ejemplo:
+         assets/avatars/luchitons.jpg
+         assets/avatars/flordepapudams.png
+      4) Buscá abajo el nombre correspondiente y completá avatar: "assets/avatars/nombre.jpg"
+
+      Ejemplo:
+      { name: "luchitons", avatar: "assets/avatars/luchitons.jpg" }
+    */
+
     const participants = [
-      "luchitons",
-      "flordepapudams",
-      "florborches",
-      "megustaelwhisky",
-      "elito_13",
-      "marintensa",
-      "alegris47",
-      "guada-lupe-s",
-      "alisenguer",
-      "micaghigliazza",
-      "agus6122",
-      "shoa_san",
-      "rocio_co23",
-      "car0not4rio",
-      "lucianahc",
-      "sabrinitah",
-      "hailucs",
-      "juliet_larregui",
-      "griseldinha",
-      "giuliii_ant",
-      "leonormacbeth",
-      "telerlo",
-      "melisaloa",
-      "AnaCaCr (Ig)",
-      "martuugonzz",
-      "carwoman7",
-      "soyyoiris",
-      "pablotwr",
-      "lucibestia05",
-      "xveganfox",
-      "rududu89",
-      "muyalplax",
-      "lilulibertad",
-      "caffi_33",
-      "roooh5",
-      "noeoeoea",
-      "grabea92",
-      "dulce_de_leche__",
-      "tecito_de_ruda",
-      "twokisses2",
-      "kmi0396",
-      "andeleeandele",
-      "sadneycyrton",
-      "bardoconurbano",
-      "julieta___18",
-      "nabu3l__",
-      "pegasus_kween",
-      "eugebona",
-      "rorohayro",
-      "ariprats21",
-      "papudita colombiana timidona",
-      "melamelaluna",
-      "magnussssssss1111",
-      "pastelitodebatatams",
-      "maceleste23",
-      "rpmicaela",
-      "loop1104",
-      "mickamiminguez",
-      "articmonquis",
-      "hoshimarusan",
-      "sol_edad_97",
-      "lolipiv",
-      "Naii_RJ",
-      "na1na2na3na4",
-      "linosauri0",
-      "Rubyrid3r",
-      "thiaggowo",
-      "lulaluux_",
-      "Julieta9776",
-      "madeinfel_",
-      "cheli0uwu",
-      "Asasske",
-      "lubelg",
-      "micazc",
-      "chechulina",
-      "belube__",
-      "el alejo de lubelg",
-      "mandipom",
-      "l4_plastic",
-      "mirtu_88",
-      "jinn",
-      "gabrielasok"
+      {
+            "name": "luchitons",
+            "avatar": ""
+      },
+      {
+            "name": "flordepapudams",
+            "avatar": ""
+      },
+      {
+            "name": "florborches",
+            "avatar": ""
+      },
+      {
+            "name": "megustaelwhisky",
+            "avatar": ""
+      },
+      {
+            "name": "elito_13",
+            "avatar": ""
+      },
+      {
+            "name": "marintensa",
+            "avatar": ""
+      },
+      {
+            "name": "alegris47",
+            "avatar": ""
+      },
+      {
+            "name": "guada-lupe-s",
+            "avatar": ""
+      },
+      {
+            "name": "alisenguer",
+            "avatar": ""
+      },
+      {
+            "name": "micaghigliazza",
+            "avatar": ""
+      },
+      {
+            "name": "agus6122",
+            "avatar": ""
+      },
+      {
+            "name": "shoa_san",
+            "avatar": ""
+      },
+      {
+            "name": "rocio_co23",
+            "avatar": ""
+      },
+      {
+            "name": "car0not4rio",
+            "avatar": ""
+      },
+      {
+            "name": "lucianahc",
+            "avatar": ""
+      },
+      {
+            "name": "sabrinitah",
+            "avatar": ""
+      },
+      {
+            "name": "hailucs",
+            "avatar": ""
+      },
+      {
+            "name": "juliet_larregui",
+            "avatar": ""
+      },
+      {
+            "name": "griseldinha",
+            "avatar": ""
+      },
+      {
+            "name": "giuliii_ant",
+            "avatar": ""
+      },
+      {
+            "name": "leonormacbeth",
+            "avatar": ""
+      },
+      {
+            "name": "telerlo",
+            "avatar": ""
+      },
+      {
+            "name": "melisaloa",
+            "avatar": ""
+      },
+      {
+            "name": "AnaCaCr (Ig)",
+            "avatar": ""
+      },
+      {
+            "name": "martuugonzz",
+            "avatar": ""
+      },
+      {
+            "name": "carwoman7",
+            "avatar": ""
+      },
+      {
+            "name": "soyyoiris",
+            "avatar": ""
+      },
+      {
+            "name": "pablotwr",
+            "avatar": ""
+      },
+      {
+            "name": "lucibestia05",
+            "avatar": ""
+      },
+      {
+            "name": "xveganfox",
+            "avatar": ""
+      },
+      {
+            "name": "rududu89",
+            "avatar": ""
+      },
+      {
+            "name": "muyalplax",
+            "avatar": ""
+      },
+      {
+            "name": "lilulibertad",
+            "avatar": ""
+      },
+      {
+            "name": "caffi_33",
+            "avatar": ""
+      },
+      {
+            "name": "roooh5",
+            "avatar": ""
+      },
+      {
+            "name": "noeoeoea",
+            "avatar": ""
+      },
+      {
+            "name": "grabea92",
+            "avatar": ""
+      },
+      {
+            "name": "dulce_de_leche__",
+            "avatar": ""
+      },
+      {
+            "name": "tecito_de_ruda",
+            "avatar": ""
+      },
+      {
+            "name": "twokisses2",
+            "avatar": ""
+      },
+      {
+            "name": "kmi0396",
+            "avatar": ""
+      },
+      {
+            "name": "andeleeandele",
+            "avatar": ""
+      },
+      {
+            "name": "sadneycyrton",
+            "avatar": ""
+      },
+      {
+            "name": "bardoconurbano",
+            "avatar": ""
+      },
+      {
+            "name": "julieta___18",
+            "avatar": ""
+      },
+      {
+            "name": "nabu3l__",
+            "avatar": ""
+      },
+      {
+            "name": "pegasus_kween",
+            "avatar": ""
+      },
+      {
+            "name": "eugebona",
+            "avatar": ""
+      },
+      {
+            "name": "rorohayro",
+            "avatar": ""
+      },
+      {
+            "name": "ariprats21",
+            "avatar": ""
+      },
+      {
+            "name": "papudita colombiana timidona",
+            "avatar": ""
+      },
+      {
+            "name": "melamelaluna",
+            "avatar": ""
+      },
+      {
+            "name": "magnussssssss1111",
+            "avatar": ""
+      },
+      {
+            "name": "pastelitodebatatams",
+            "avatar": ""
+      },
+      {
+            "name": "maceleste23",
+            "avatar": ""
+      },
+      {
+            "name": "rpmicaela",
+            "avatar": ""
+      },
+      {
+            "name": "loop1104",
+            "avatar": ""
+      },
+      {
+            "name": "mickamiminguez",
+            "avatar": ""
+      },
+      {
+            "name": "articmonquis",
+            "avatar": ""
+      },
+      {
+            "name": "hoshimarusan",
+            "avatar": ""
+      },
+      {
+            "name": "sol_edad_97",
+            "avatar": ""
+      },
+      {
+            "name": "lolipiv",
+            "avatar": ""
+      },
+      {
+            "name": "Naii_RJ",
+            "avatar": ""
+      },
+      {
+            "name": "na1na2na3na4",
+            "avatar": ""
+      },
+      {
+            "name": "linosauri0",
+            "avatar": ""
+      },
+      {
+            "name": "Rubyrid3r",
+            "avatar": ""
+      },
+      {
+            "name": "thiaggowo",
+            "avatar": ""
+      },
+      {
+            "name": "lulaluux_",
+            "avatar": ""
+      },
+      {
+            "name": "Julieta9776",
+            "avatar": ""
+      },
+      {
+            "name": "madeinfel_",
+            "avatar": ""
+      },
+      {
+            "name": "cheli0uwu",
+            "avatar": ""
+      },
+      {
+            "name": "Asasske",
+            "avatar": ""
+      },
+      {
+            "name": "lubelg",
+            "avatar": ""
+      },
+      {
+            "name": "micazc",
+            "avatar": ""
+      },
+      {
+            "name": "chechulina",
+            "avatar": ""
+      },
+      {
+            "name": "belube__",
+            "avatar": ""
+      },
+      {
+            "name": "el alejo de lubelg",
+            "avatar": ""
+      },
+      {
+            "name": "mandipom",
+            "avatar": ""
+      },
+      {
+            "name": "l4_plastic",
+            "avatar": ""
+      },
+      {
+            "name": "mirtu_88",
+            "avatar": ""
+      },
+      {
+            "name": "jinn",
+            "avatar": ""
+      },
+      {
+            "name": "gabrielasok",
+            "avatar": ""
+      }
 ];
 
     const genericMessages = [
@@ -595,6 +914,7 @@
     ];
 
     let currentChallenge = 0;
+    let answerWasAccepted = false;
 
     const introScreen = document.querySelector("#introScreen");
     const challengeScreen = document.querySelector("#challengeScreen");
@@ -607,6 +927,7 @@
     const challengeQuestion = document.querySelector("#challengeQuestion");
     const options = document.querySelector("#options");
     const feedback = document.querySelector("#feedback");
+    const nextChallengeBtn = document.querySelector("#nextChallengeBtn");
     const constellation = document.querySelector("#constellation");
     const tooltip = document.querySelector("#tooltip");
     const tooltipName = document.querySelector("#tooltipName");
@@ -621,43 +942,43 @@
 
     function loadChallenge() {
       const item = challenges[currentChallenge];
+      answerWasAccepted = false;
       challengeKicker.textContent = `Desafío ${currentChallenge + 1}/3`;
       challengeTitle.textContent = item.title;
       challengeQuestion.textContent = item.question;
       feedback.textContent = "";
       feedback.className = "feedback";
+      nextChallengeBtn.classList.remove("visible");
+      nextChallengeBtn.textContent = currentChallenge === challenges.length - 1 ? "Veredicto final" : "Siguiente desgracia";
       options.innerHTML = "";
 
       item.options.forEach((option, index) => {
         const btn = document.createElement("button");
         btn.className = "option";
         btn.textContent = option;
-        btn.addEventListener("click", () => handleAnswer(index));
+        btn.addEventListener("click", () => handleAnswer(index, btn));
         options.appendChild(btn);
       });
     }
 
-    function handleAnswer(index) {
+    function handleAnswer(index, clickedButton) {
+      if (answerWasAccepted) return;
+
       const item = challenges[currentChallenge];
 
+      document.querySelectorAll(".option").forEach(btn => btn.classList.remove("wrong"));
+
       if (index === item.correct) {
+        answerWasAccepted = true;
+        clickedButton.classList.add("correct");
         feedback.textContent = item.ok;
         feedback.className = "feedback ok";
-
+        nextChallengeBtn.classList.add("visible");
         document.querySelectorAll(".option").forEach(btn => btn.disabled = true);
-
-        setTimeout(() => {
-          currentChallenge++;
-          if (currentChallenge < challenges.length) {
-            loadChallenge();
-          } else {
-            showScreen(finalScreen);
-          }
-        }, 950);
-
         return;
       }
 
+      clickedButton.classList.add("wrong");
       const roasts = [
         "Incorrecto. El multiverso sintió vergüenza ajena.",
         "No. Pero se valora el intento, ponele.",
@@ -666,6 +987,17 @@
       ];
       feedback.textContent = roasts[Math.floor(Math.random() * roasts.length)];
       feedback.className = "feedback bad";
+    }
+
+    function nextChallenge() {
+      if (!answerWasAccepted) return;
+
+      currentChallenge++;
+      if (currentChallenge < challenges.length) {
+        loadChallenge();
+      } else {
+        showScreen(finalScreen);
+      }
     }
 
     function seededRandom(seed) {
@@ -685,35 +1017,70 @@
       return "@" + name;
     }
 
+    function createAvatarElement(person, small = false) {
+      const avatar = document.createElement(person.avatar ? "img" : "span");
+      avatar.className = small ? (person.avatar ? "node-photo" : "node-initial") : "avatar";
+
+      if (person.avatar) {
+        avatar.src = person.avatar;
+        avatar.alt = displayName(person.name);
+        avatar.onerror = () => {
+          const fallback = document.createElement("span");
+          fallback.className = small ? "node-initial" : "avatar";
+          fallback.textContent = initialFor(person.name);
+          avatar.replaceWith(fallback);
+        };
+      } else {
+        avatar.textContent = initialFor(person.name);
+      }
+
+      return avatar;
+    }
+
     function buildConstellation() {
       constellation.innerHTML = "";
 
-      participants.forEach((name, index) => {
+      participants.forEach((person, index) => {
         const node = document.createElement("span");
         node.className = "node";
-        node.textContent = displayName(name);
-
-        const left = 7 + seededRandom(index * 9.17 + 2) * 86;
-        const top = 8 + seededRandom(index * 13.31 + 4) * 84;
-
-        node.style.left = left + "%";
-        node.style.top = top + "%";
         node.style.setProperty("--delay", (seededRandom(index + 10) * 2.4).toFixed(2) + "s");
+
+        const avatar = createAvatarElement(person, true);
+
+        const name = document.createElement("span");
+        name.className = "node-name";
+        name.textContent = displayName(person.name);
+
+        node.appendChild(avatar);
+        node.appendChild(name);
 
         const msg = genericMessages[index % genericMessages.length];
 
         node.addEventListener("mouseenter", () => {
-          tooltipName.textContent = displayName(name);
+          tooltipName.textContent = displayName(person.name);
           tooltipMsg.textContent = msg;
-          tooltipAvatar.textContent = initialFor(name);
+          tooltipAvatar.innerHTML = "";
+
+          if (person.avatar) {
+            const img = document.createElement("img");
+            img.src = person.avatar;
+            img.alt = displayName(person.name);
+            img.onerror = () => {
+              tooltipAvatar.textContent = initialFor(person.name);
+            };
+            tooltipAvatar.appendChild(img);
+          } else {
+            tooltipAvatar.textContent = initialFor(person.name);
+          }
+
           tooltip.classList.add("show");
         });
 
         node.addEventListener("mousemove", (event) => {
           const padding = 18;
-          const tooltipWidth = 280;
+          const tooltipWidth = 300;
           const x = Math.min(event.clientX + 18, window.innerWidth - tooltipWidth - padding);
-          const y = Math.min(event.clientY + 18, window.innerHeight - 100);
+          const y = Math.min(event.clientY + 18, window.innerHeight - 110);
           tooltip.style.left = x + "px";
           tooltip.style.top = y + "px";
         });
@@ -731,6 +1098,8 @@
       loadChallenge();
       showScreen(challengeScreen);
     });
+
+    nextChallengeBtn.addEventListener("click", nextChallenge);
 
     creditsBtn.addEventListener("click", () => {
       buildConstellation();
