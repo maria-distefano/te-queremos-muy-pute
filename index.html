@@ -543,9 +543,9 @@
     </div>
   </div>
 
-  <div class="ribbon one"><span>* MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE * MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE</span></div>
-  <div class="ribbon two"><span>* PAPUDOM <b>*</b> MUY PUTE <b>*</b> FELIZ CUMPLE <b>*</b> PAPUDOM <b>*</b> MUY PUTE <b>*</b> FELIZ CUMPLE <b>*</b> PAPUDOM * PAPUDOM <b>*</b> MUY PUTE <b>*</b> FELIZ CUMPLE <b>*</b> PAPUDOM <b>*</b> MUY PUTE <b>*</b> FELIZ CUMPLE <b>*</b> PAPUDOM</span></div>
-  <div class="ribbon three"><span>* MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE * MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE</span></div>
+  <div class="ribbon one"><span>* MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE</span></div>
+  <div class="ribbon two"><span>* PAPUDOM <b>*</b> MUY PUTE <b>*</b> FELIZ CUMPLE <b>*</b> PAPUDOM <b>*</b> MUY PUTE <b>*</b> FELIZ CUMPLE <b>*</b> PAPUDOM</span></div>
+  <div class="ribbon three"><span>* MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE</span></div>
 
   <main>
     <section id="introScreen" class="screen active">
@@ -1246,6 +1246,22 @@
       setTimeout(() => bizcochos.forEach(el => el.remove()), 2500);
     }
 
+    function setupMarquees() {
+      document.querySelectorAll(".ribbon span").forEach(span => {
+        const html = span.innerHTML;
+        const cs = getComputedStyle(span);
+        const tmp = document.createElement("span");
+        tmp.style.cssText = "position:fixed;left:0;top:0;visibility:hidden;white-space:nowrap;pointer-events:none;z-index:-1;font:" + cs.font + ";letter-spacing:" + cs.letterSpacing;
+        tmp.innerHTML = html;
+        document.body.appendChild(tmp);
+        const singleW = tmp.offsetWidth;
+        document.body.removeChild(tmp);
+        const ribbonW = span.parentElement.offsetWidth;
+        const reps = Math.max(1, Math.ceil(ribbonW / singleW));
+        span.innerHTML = Array.from({ length: reps * 2 }, () => html).join(" ");
+      });
+    }
+
     function loadChallenge() {
       cleanupBizcochos();
       const item = challenges[currentChallenge];
@@ -1656,6 +1672,7 @@
       resizeTimer = setTimeout(buildConstellation, 180);
     });
 
+    setupMarquees();
     processDonSaturImage(src => { processedDonSaturSrc = src; });
     updateScore();
   </script>
