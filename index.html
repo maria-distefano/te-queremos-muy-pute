@@ -437,8 +437,6 @@
       gap: 9px;
       width: fit-content;
       max-width: min(330px, calc(100% - 70px));
-      animation: floaty 4s ease-in-out infinite;
-      animation-delay: var(--delay);
       transform: translate(-50%, -50%);
       visibility: hidden;
     }
@@ -471,10 +469,43 @@
       z-index: 8;
     }
 
-    @keyframes floaty {
-      0%, 100% { translate: 0 0; }
-      50% { translate: 0 -5px; }
+    .node-timidona {
+      background: linear-gradient(135deg, #ff6b9d, #c44569);
+      border-color: rgba(255,107,157,.35);
+      box-shadow: 0 0 14px rgba(255,107,157,.2);
     }
+
+    .node-timidona:hover {
+      transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, #ff6b9d, #c44569);
+      border-color: rgba(255,107,157,.35);
+      box-shadow: 0 0 14px rgba(255,107,157,.2);
+      color: #efe8ff;
+      cursor: default;
+    }
+
+    .constellation-lines {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      border-radius: 24px;
+    }
+
+    .constellation-line {
+      stroke: rgba(255,255,255,.1);
+      stroke-width: 1;
+    }
+
+    .constellation-legend {
+      margin-top: 18px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .constellation-legend strong { color: #ff6b9d; }
 
     .tooltip {
       position: fixed;
@@ -610,9 +641,12 @@
         <div class="kicker">Archivo clasificado</div>
         <h2>El multiverso papudom</h2>
         <p>Estas son las personas que participaron de esta operación. Te desean feliz cumple y, lamentablemente, probablemente por muchos más.</p>
-        <p class="muted">Pasá el cursor sobre los nombres para ver el prontuario emocional.</p>
+        <p class="muted">Pasá el cursor por los nodos violetas para ver los mensajes de las papudas.</p>
       </div>
-      <div id="constellation" class="constellation"></div>
+      <div id="constellation" class="constellation">
+        <svg class="constellation-lines"></svg>
+      </div>
+      <p class="constellation-legend muted">Los nodos <strong>rosados</strong> que huyen del mouse son las Papudas Timídonas 💜</p>
     </section>
   </main>
 
@@ -1044,6 +1078,12 @@
       }
 ];
 
+    const timidonas = Array.from({ length: participants.length }, (_, i) => ({
+      name: `Papuda timídonas Nº${i + 1}`,
+      isTimidona: true,
+      avatar: ""
+    }));
+
     const incorrectMessages = [
       "Eso es un diagnóstico",
       "Aaaaaah, no podé decir asírs",
@@ -1447,11 +1487,6 @@
       });
     }
 
-    function seededRandom(seed) {
-      const x = Math.sin(seed) * 10000;
-      return x - Math.floor(x);
-    }
-
     function initialFor(name) {
       const clean = name.replace("@", "").trim();
       return clean.charAt(0).toUpperCase();
@@ -1492,7 +1527,6 @@
     function createNode(person, index) {
       const node = document.createElement("span");
       node.className = "node";
-      node.style.setProperty("--delay", (seededRandom(index + 10) * 2.4).toFixed(2) + "s");
 
       const avatar = createAvatarElement(person, true);
       const name = document.createElement("span");
@@ -1545,102 +1579,176 @@
       tooltip.classList.remove("show");
     }
 
-    function shuffledNodes(nodes) {
-      return [...nodes].sort((a, b) => {
-        const aSeed = seededRandom((a.index + 1) * 18.73);
-        const bSeed = seededRandom((b.index + 1) * 18.73);
-        return aSeed - bSeed;
-      });
+    function createTimidonaNode(person) {
+      const node = document.createElement("span");
+      node.className = "node node-timidona";
+
+      const avatar = document.createElement("span");
+      avatar.className = "node-initial";
+      avatar.textContent = "?";
+
+      const name = document.createElement("span");
+      name.className = "node-name";
+      name.textContent = person.name;
+
+      node.appendChild(avatar);
+      node.appendChild(name);
+
+      return node;
     }
 
-    function measureNodes(nodes) {
-      nodes.forEach(item => {
-        item.width = Math.ceil(item.element.offsetWidth);
-        item.height = Math.ceil(item.element.offsetHeight);
-      });
-    }
+    let allNodes = [];
+    let connections = [];
+    let mouseX = -9999;
+    let mouseY = -9999;
+    let animFrameId = null;
 
-    function buildRows(nodes, availableWidth) {
-      const rows = [];
-      let currentRow = [];
-      let currentWidth = 0;
-      const minGap = 24;
+    function animateConstellation() {
+      const cw = constellation.clientWidth;
+      const ch = constellation.clientHeight;
+      const pad = window.innerWidth <= 720 ? 22 : 42;
 
-      shuffledNodes(nodes).forEach(item => {
-        const nextWidth = currentRow.length === 0 ? item.width : currentWidth + minGap + item.width;
+      allNodes.forEach(n => {
+        n.vx += (n.tx - n.x) * 0.008;
+        n.vy += (n.ty - n.y) * 0.008;
 
-        if (currentRow.length > 0 && nextWidth > availableWidth) {
-          rows.push(currentRow);
-          currentRow = [item];
-          currentWidth = item.width;
-        } else {
-          currentRow.push(item);
-          currentWidth = nextWidth;
+        n.vx += (Math.random() - 0.5) * 0.04;
+        n.vy += (Math.random() - 0.5) * 0.04;
+
+        allNodes.forEach(other => {
+          if (n === other) return;
+          const dx = n.x - other.x;
+          const dy = n.y - other.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 50 && dist > 0) {
+            const force = (50 - dist) / 50 * 0.3;
+            n.vx += (dx / dist) * force;
+            n.vy += (dy / dist) * force;
+          }
+        });
+
+        if (n.isTimidona) {
+          const dx = n.x - mouseX;
+          const dy = n.y - mouseY;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 160 && dist > 0) {
+            const force = (160 - dist) / 160 * 2.5;
+            n.vx += (dx / dist) * force;
+            n.vy += (dy / dist) * force;
+          }
         }
+
+        n.vx *= 0.94;
+        n.vy *= 0.94;
+
+        n.x += n.vx;
+        n.y += n.vy;
+
+        n.x = Math.max(pad, Math.min(cw - pad, n.x));
+        n.y = Math.max(pad, Math.min(ch - pad, n.y));
+
+        n.el.style.left = n.x + "px";
+        n.el.style.top = n.y + "px";
       });
 
-      if (currentRow.length > 0) rows.push(currentRow);
-      return rows;
-    }
-
-    function distributeRow(row, rowIndex, availableWidth, padding, rowBandHeight) {
-      const minGap = 24;
-      const totalNodeWidth = row.reduce((sum, item) => sum + item.width, 0);
-      const gapCount = Math.max(0, row.length - 1);
-      const requiredWidth = totalNodeWidth + minGap * gapCount;
-      const leftover = Math.max(0, availableWidth - requiredWidth);
-
-      const spaceSlots = row.length + 1;
-      const weights = Array.from({ length: spaceSlots }, (_, i) => 0.35 + seededRandom((rowIndex + 1) * (i + 3) * 11.19));
-      const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
-      const extraSpaces = weights.map(weight => leftover * (weight / totalWeight));
-
-      let x = padding + extraSpaces[0];
-      const rowJitter = (seededRandom((rowIndex + 1) * 71.3) - 0.5) * 14;
-      const y = padding + rowBandHeight * rowIndex + rowBandHeight / 2 + rowJitter;
-
-      row.forEach((item, index) => {
-        x += item.width / 2;
-        const microJitterX = (seededRandom((item.index + 1) * 41.9) - 0.5) * 8;
-        const microJitterY = (seededRandom((item.index + 1) * 57.2) - 0.5) * 8;
-
-        item.element.style.left = (x + microJitterX) + "px";
-        item.element.style.top = (y + microJitterY) + "px";
-        item.element.classList.add("is-positioned");
-
-        x += item.width / 2 + minGap + extraSpaces[index + 1];
+      connections.forEach(c => {
+        const a = allNodes[c.i], b = allNodes[c.j];
+        c.line.setAttribute("x1", a.x);
+        c.line.setAttribute("y1", a.y);
+        c.line.setAttribute("x2", b.x);
+        c.line.setAttribute("y2", b.y);
       });
-    }
 
-    function positionNodes(nodes) {
-      const containerWidth = constellation.clientWidth;
-      const padding = window.innerWidth <= 720 ? 22 : 42;
-      const availableWidth = Math.max(260, containerWidth - padding * 2);
-
-      measureNodes(nodes);
-
-      const rows = buildRows(nodes, availableWidth);
-      const tallestNode = Math.max(...nodes.map(item => item.height), 48);
-      const rowBandHeight = Math.max(82, tallestNode + 38);
-      const neededHeight = padding * 2 + rows.length * rowBandHeight + 36;
-      constellation.style.minHeight = neededHeight + "px";
-
-      rows.forEach((row, rowIndex) => {
-        distributeRow(row, rowIndex, availableWidth, padding, rowBandHeight);
-      });
+      animFrameId = requestAnimationFrame(animateConstellation);
     }
 
     function buildConstellation() {
       hideTooltip();
+      cancelAnimationFrame(animFrameId);
       constellation.innerHTML = "";
 
-      const nodes = participants.map((person, index) => {
-        const element = createNode(person, index);
-        constellation.appendChild(element);
-        return { person, index, element, width: 0, height: 0 };
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("class", "constellation-lines");
+      constellation.appendChild(svg);
+
+      constellation.addEventListener("mousemove", e => {
+        const rect = constellation.getBoundingClientRect();
+        mouseX = e.clientX - rect.left;
+        mouseY = e.clientY - rect.top;
       });
 
-      requestAnimationFrame(() => positionNodes(nodes));
+      const cw = constellation.clientWidth;
+      const ch = constellation.clientHeight;
+      const pad = window.innerWidth <= 720 ? 22 : 42;
+      const aw = Math.max(260, cw - pad * 2);
+      const ah = Math.max(400, ch - pad * 2);
+
+      allNodes = [];
+      connections = [];
+
+      participants.forEach((person, i) => {
+        const el = createNode(person, i);
+        constellation.appendChild(el);
+
+        let x, y, ok;
+        let tries = 0;
+        do {
+          x = pad + Math.random() * aw;
+          y = pad + Math.random() * ah;
+          ok = allNodes.every(n => n.isTimidona || Math.hypot(n.tx - x, n.ty - y) > 70);
+          tries++;
+        } while (!ok && tries < 60);
+
+        allNodes.push({ el, isTimidona: false, x, y, tx: x, ty: y, vx: 0, vy: 0 });
+      });
+
+      const timidonaCount = timidonas.length;
+      const clusterCount = Math.max(1, Math.ceil(timidonaCount / 4));
+      const clusters = Array.from({ length: clusterCount }, () => ({
+        x: pad + 70 + Math.random() * (aw - 140),
+        y: pad + 70 + Math.random() * (ah - 140)
+      }));
+
+      timidonas.forEach((person, i) => {
+        const el = createTimidonaNode(person);
+        constellation.appendChild(el);
+
+        const ci = i % clusterCount;
+        const cl = clusters[ci];
+        const x = Math.max(pad, Math.min(cw - pad, cl.x + (Math.random() - 0.5) * 80));
+        const y = Math.max(pad, Math.min(ch - pad, cl.y + (Math.random() - 0.5) * 80));
+
+        allNodes.push({ el, isTimidona: true, ci, x, y, tx: x, ty: y, vx: 0, vy: 0 });
+      });
+
+      allNodes.forEach(n => {
+        n.el.style.left = n.x + "px";
+        n.el.style.top = n.y + "px";
+        n.el.classList.add("is-positioned");
+      });
+
+      constellation.style.minHeight = Math.max(1450, ch) + "px";
+
+      const N = allNodes.length;
+      for (let i = 0; i < N; i++) {
+        for (let j = i + 1; j < N; j++) {
+          const a = allNodes[i], b = allNodes[j];
+          let prob;
+          if (!a.isTimidona && !b.isTimidona) prob = 0.08;
+          else if (a.isTimidona && b.isTimidona) {
+            prob = a.ci === b.ci ? 0.35 : 0.02;
+          } else prob = 0.01;
+
+          if (Math.random() < prob) {
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("class", "constellation-line");
+            svg.appendChild(line);
+            connections.push({ i, j, line });
+          }
+        }
+      }
+
+      animFrameId = requestAnimationFrame(animateConstellation);
     }
 
     startBtn.addEventListener("click", () => {
