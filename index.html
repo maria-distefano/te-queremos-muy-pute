@@ -171,6 +171,29 @@
       text-shadow: 3px 3px 0 rgba(123,44,255,.4);
     }
 
+    .surprise-box {
+      margin: 24px 0;
+      padding: 16px 24px;
+      border-radius: 16px;
+      border: 2px solid var(--violet);
+      background: rgba(255,255,255,.04);
+      text-align: center;
+      font-size: clamp(20px, 3.2vw, 38px);
+      font-weight: 850;
+      font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+      text-shadow: 3px 3px 0 rgba(123,44,255,.4);
+      animation: surpriseBorder 3s ease-in-out infinite;
+    }
+
+    @keyframes surpriseBorder {
+      0%, 100% { border-color: #7b2cff; box-shadow: 0 0 20px rgba(123,44,255,.25), inset 0 0 16px rgba(123,44,255,.08); }
+      25% { border-color: #ff4fd8; box-shadow: 0 0 20px rgba(255,79,216,.25), inset 0 0 16px rgba(255,79,216,.08); }
+      50% { border-color: #ffdf69; box-shadow: 0 0 20px rgba(255,223,105,.25), inset 0 0 16px rgba(255,223,105,.08); }
+      75% { border-color: #9cffcb; box-shadow: 0 0 20px rgba(156,255,203,.25), inset 0 0 16px rgba(156,255,203,.08); }
+    }
+
     p {
       font-size: clamp(18px, 2.1vw, 25px);
       line-height: 1.4;
@@ -638,9 +661,9 @@
       <p>¿Adiviná qué? Hemos llegado al final de este cuestionarioooooms, siiii.</p>
       <p>¿Cómo que no? Sí, sí. Ya nos tocamos las dos lolas, nos comimos todos los bizcochito y nos dieron tré bauleti.</p>
       <p><strong>Feli cumpleaños papudito.</strong> Estas son las papuditas mal que te aman el rollito mal.</p>
+      <div class="surprise-box">🤩 Ahora sí: buscá tu sorpresa en la puerta...</div>
       <p>Este es un listado de algunas de las tantas papudas que te aman mal, y te agradecen por hacer que nos bañemos más seguido.</p>
       <p>Pasá la flechita por los usuarios de Twitch para ver la papudita mal detrás de este bello locurón.</p>
-      <h3>🤩 Ahora sí: buscá tu sorpresa en la puerta...</h3>
       <div class="actions">
         <button class="secondary" id="creditsBtn">Ver a los culpables</button>
       </div>
