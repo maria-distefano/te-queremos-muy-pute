@@ -328,6 +328,32 @@
       100% { transform: translate(calc(var(--point-x) - 10px), calc(var(--point-y) - 74px)) scale(1.04); opacity: 0; }
     }
 
+    .don-satur-bizcocho {
+      position: fixed;
+      bottom: -80px;
+      z-index: 55;
+      pointer-events: none;
+      animation: bizcochoRise 2s ease-out forwards;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,.3));
+    }
+
+    @keyframes bizcochoRise {
+      0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+      12% {
+        opacity: 1;
+      }
+      75% {
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(calc(-1 * var(--rise-height))) translateX(var(--drift)) rotate(var(--spin));
+        opacity: 0;
+      }
+    }
+
     .challenge-box { margin-top: 26px; display: grid; gap: 12px; }
 
     .option {
@@ -1164,7 +1190,64 @@
       if (sourceElement) spawnRewardAnimation(sourceElement);
     }
 
+    function cleanupBizcochos() {
+      document.querySelectorAll(".don-satur-bizcocho").forEach(el => el.remove());
+    }
+
+    function processDonSaturImage(callback) {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+        const threshold = 240;
+        for (let i = 0; i < data.length; i += 4) {
+          if (data[i] > threshold && data[i+1] > threshold && data[i+2] > threshold) {
+            data[i+3] = 0;
+          }
+        }
+        ctx.putImageData(imageData, 0, 0);
+        callback(canvas.toDataURL("image/png"));
+      };
+      img.onerror = () => callback(DON_SATUR_SRC);
+      img.src = "WhatsApp Image 2026-06-07 at 17.14.50.jpeg";
+    }
+
+    let processedDonSaturSrc = DON_SATUR_SRC;
+
+    function spawnDonSaturCelebration() {
+      const count = 8 + Math.floor(Math.random() * 5);
+      const bizcochos = [];
+      for (let i = 0; i < count; i++) {
+        const img = document.createElement("img");
+        img.src = processedDonSaturSrc;
+        img.alt = "Bizcocho Don Satur";
+        img.className = "don-satur-bizcocho";
+        const riseHeight = 350 + Math.random() * 400;
+        const drift = (Math.random() - 0.5) * 300;
+        const spin = (Math.random() - 0.5) * 540;
+        const left = 3 + Math.random() * 88;
+        const size = 55 + Math.random() * 65;
+        const delay = Math.random() * 0.35;
+        img.style.setProperty("--rise-height", riseHeight + "px");
+        img.style.setProperty("--drift", drift + "px");
+        img.style.setProperty("--spin", spin + "deg");
+        img.style.left = left + "vw";
+        img.style.width = size + "px";
+        img.style.height = "auto";
+        img.style.animationDelay = delay + "s";
+        document.body.appendChild(img);
+        bizcochos.push(img);
+      }
+      setTimeout(() => bizcochos.forEach(el => el.remove()), 2500);
+    }
+
     function loadChallenge() {
+      cleanupBizcochos();
       const item = challenges[currentChallenge];
       answerWasAccepted = false;
       selectedOptions = new Set();
@@ -1272,6 +1355,7 @@
       document.querySelectorAll(".option").forEach(btn => btn.disabled = true);
 
       grantBizcochitoms(triggerElement || nextChallengeBtn);
+      spawnDonSaturCelebration();
     }
 
     function nextChallenge() {
@@ -1572,6 +1656,7 @@
       resizeTimer = setTimeout(buildConstellation, 180);
     });
 
+    processDonSaturImage(src => { processedDonSaturSrc = src; });
     updateScore();
   </script>
 </body>
