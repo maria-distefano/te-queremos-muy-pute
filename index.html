@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>El multiverso papudom</title>
+
   <style>
     :root {
       --bg: #050506;
@@ -77,13 +78,28 @@
       padding: 0 12px;
     }
 
-    .ribbon.one { top: 12%; transform: rotate(-7deg); }
-    .ribbon.two { top: 49%; transform: rotate(6deg); }
-    .ribbon.three { bottom: 8%; transform: rotate(-4deg); }
+    .ribbon.one {
+      top: 12%;
+      transform: rotate(-7deg);
+    }
+
+    .ribbon.two {
+      top: 49%;
+      transform: rotate(6deg);
+    }
+
+    .ribbon.three {
+      bottom: 8%;
+      transform: rotate(-4deg);
+    }
 
     @keyframes marquee {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-50%);
+      }
     }
 
     main {
@@ -117,8 +133,14 @@
     }
 
     @keyframes pop {
-      from { opacity: 0; transform: translateY(12px) scale(.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     .kicker {
@@ -138,7 +160,8 @@
       text-transform: uppercase;
     }
 
-    h1, h2 {
+    h1,
+    h2 {
       margin: 0;
       line-height: .95;
       text-transform: uppercase;
@@ -275,6 +298,7 @@
       min-height: 760px;
       width: min(1180px, 100%);
       justify-content: flex-start;
+      overflow: visible;
     }
 
     .credits-header {
@@ -284,17 +308,17 @@
     }
 
     .constellation {
-  position: relative;
-  flex: 1;
-  min-height: 980px;
-  border: 1px solid rgba(255,255,255,.10);
-  border-radius: 24px;
-  background:
-    radial-gradient(circle at center, rgba(123,44,255,.15), transparent 45%),
-    rgba(0,0,0,.22);
-  overflow: visible;
-  padding: 24px;
-}
+      position: relative;
+      flex: 1;
+      min-height: 1120px;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at center, rgba(123,44,255,.15), transparent 45%),
+        rgba(0,0,0,.22);
+      overflow: visible;
+      padding: 24px;
+    }
 
     .constellation::before {
       content: "";
@@ -309,28 +333,28 @@
     }
 
     .node {
-  position: absolute;
-  z-index: 1;
-  min-height: 48px;
-  padding: 9px 12px;
-  border-radius: 999px;
-  color: #efe8ff;
-  font-size: 13px;
-  font-weight: 850;
-  background: rgba(11, 8, 18, .76);
-  border: 1px solid rgba(216,182,255,.24);
-  box-shadow: 0 0 14px rgba(123,44,255,.16);
-  cursor: default;
-  user-select: none;
-  transition: transform .18s ease, color .18s ease, background .18s ease, box-shadow .18s ease, border-color .18s ease;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  min-width: 0;
-  animation: floaty 4s ease-in-out infinite;
-  animation-delay: var(--delay);
-  transform: translate(-50%, -50%);
-}
+      position: absolute;
+      z-index: 1;
+      min-height: 48px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      color: #efe8ff;
+      font-size: 13px;
+      font-weight: 850;
+      background: rgba(11, 8, 18, .76);
+      border: 1px solid rgba(216,182,255,.24);
+      box-shadow: 0 0 14px rgba(123,44,255,.16);
+      cursor: default;
+      user-select: none;
+      transition: transform .18s ease, color .18s ease, background .18s ease, box-shadow .18s ease, border-color .18s ease;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+      animation: floaty 4s ease-in-out infinite;
+      animation-delay: var(--delay);
+      transform: translate(-50%, -50%);
+    }
 
     .node-photo,
     .node-initial {
@@ -355,24 +379,28 @@
     }
 
     .node:hover {
-  transform: translate(-50%, -50%) translateY(-3px) scale(1.06);
-  color: white;
-  background: rgba(123,44,255,.58);
-  border-color: rgba(255,255,255,.45);
-  box-shadow: 0 0 28px rgba(176,0,255,.82);
-  z-index: 8;
-}
+      transform: translate(-50%, -50%) translateY(-3px) scale(1.06);
+      color: white;
+      background: rgba(123,44,255,.58);
+      border-color: rgba(255,255,255,.45);
+      box-shadow: 0 0 28px rgba(176,0,255,.82);
+      z-index: 8;
+    }
 
     @keyframes floaty {
-      0%, 100% { translate: 0 0; }
-      50% { translate: 0 -5px; }
+      0%, 100% {
+        translate: 0 0;
+      }
+      50% {
+        translate: 0 -5px;
+      }
     }
 
     .tooltip {
       position: fixed;
       z-index: 50;
       display: none;
-      width: min(300px, calc(100vw - 32px));
+      width: min(340px, calc(100vw - 32px));
       padding: 14px;
       border: 1px solid rgba(216,182,255,.4);
       border-radius: 18px;
@@ -442,7 +470,7 @@
       }
 
       .constellation {
-        min-height: 1450px;
+        min-height: 1650px;
         padding: 16px;
       }
 
@@ -455,9 +483,17 @@
 </head>
 
 <body>
-  <div class="ribbon one"><span>* MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE</span></div>
-  <div class="ribbon two"><span>* PAPUDOM <b>*</b> MUY PUTE <b>*</b> FELIZ CUMPLE <b>*</b> PAPUDOM <b>*</b> MUY PUTE <b>*</b> FELIZ CUMPLE <b>*</b> PAPUDOM</span></div>
-  <div class="ribbon three"><span>* MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE</span></div>
+  <div class="ribbon one">
+    <span>* MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE</span>
+  </div>
+
+  <div class="ribbon two">
+    <span>* PAPUDOM <b>*</b> MUY PUTE <b>*</b> FELIZ CUMPLE <b>*</b> PAPUDOM <b>*</b> MUY PUTE <b>*</b> FELIZ CUMPLE <b>*</b> PAPUDOM</span>
+  </div>
+
+  <div class="ribbon three">
+    <span>* MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE <b>*</b> MUY PUTE</span>
+  </div>
 
   <main>
     <section id="introScreen" class="screen active">
@@ -465,6 +501,7 @@
       <h1>El multiverso papudom</h1>
       <p>No podíamos simplemente darte un regalo como gente normal. Tenías que laburar un laburoms.</p>
       <p class="muted">Resolvé 3 desafíos de dudosa utilidad pública y desbloqueá la información clasificada.</p>
+
       <div class="actions">
         <button id="startBtn">Empezar el rituals</button>
       </div>
@@ -474,11 +511,15 @@
       <div class="kicker" id="challengeKicker">Desafío 1/3</div>
       <h2 id="challengeTitle">Cargando humillación...</h2>
       <p id="challengeQuestion"></p>
+
       <div id="options" class="challenge-box"></div>
+
       <div id="feedback" class="feedback"></div>
+
       <div class="actions">
         <button id="nextChallengeBtn">Siguiente desgracia</button>
       </div>
+
       <p class="tiny">Nota legal: este juego no mide inteligencia, solo paciencia.</p>
     </section>
 
@@ -488,6 +529,7 @@
       <p>Superaste los desafíos del multiverso papudom, lo cual habla muy bien de tu perseverancia y muy mal de nuestro criterio.</p>
       <p><strong>Ahora sí: buscá tu sorpresa en la puerta.</strong></p>
       <p class="muted">Feliz cumpleaños. Esto fue organizado por gente que claramente no sabe demostrar afecto de forma convencional.</p>
+
       <div class="actions">
         <button class="secondary" id="creditsBtn">Ver a los culpables</button>
       </div>
@@ -498,8 +540,9 @@
         <div class="kicker">Archivo clasificado</div>
         <h2>El multiverso papudom</h2>
         <p>Estas son las personas que participaron de esta operación. Te desean feliz cumple y, lamentablemente, probablemente por muchos más.</p>
-        <p class="muted">Pasá el cursor sobre los nombres para ver el prontuario emocional. Los nombres ahora están en modo legible, porque superponerlos era muy artístico pero poco útil. El MOMA deberá esperar.</p>
+        <p class="muted">Pasá el cursor sobre los nombres para ver el prontuario emocional.</p>
       </div>
+
       <div id="constellation" class="constellation"></div>
     </section>
   </main>
@@ -520,354 +563,434 @@
       3) Guardá las fotos ahí, por ejemplo:
          assets/avatars/luchitons.jpg
          assets/avatars/flordepapudams.png
-      4) Buscá abajo el nombre correspondiente y completá avatar: "assets/avatars/nombre.jpg"
+
+      4) En cada participante completá avatar:
+         avatar: "assets/avatars/luchitons.jpg"
+
+      PARA AGREGAR MENSAJES PERSONALIZADOS:
+      - Completá el campo message de cada participante.
+      - Importante: el nombre correcto del campo es message.
+      - Si por accidente escribís mesage, el código también lo va a tomar, porque somos caóticas pero no crueles.
 
       Ejemplo:
-      { name: "luchitons", avatar: "assets/avatars/luchitons.jpg" }
+      {
+        name: "luchitons",
+        avatar: "assets/avatars/luchitons.jpg",
+        message: "Feliz cumple, gracias por tantos streams y tantas risas."
+      }
     */
 
     const participants = [
       {
             "name": "luchitons",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "flordepapudams",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "florborches",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "megustaelwhisky",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "elito_13",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "marintensa",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "alegris47",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "guada-lupe-s",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "alisenguer",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "micaghigliazza",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "agus6122",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "shoa_san",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "rocio_co23",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "car0not4rio",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "lucianahc",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "sabrinitah",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "hailucs",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "juliet_larregui",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "griseldinha",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "giuliii_ant",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "leonormacbeth",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "telerlo",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "melisaloa",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "AnaCaCr (Ig)",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "martuugonzz",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "carwoman7",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "soyyoiris",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "pablotwr",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "lucibestia05",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "xveganfox",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "rududu89",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "muyalplax",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "lilulibertad",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "caffi_33",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "roooh5",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "noeoeoea",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "grabea92",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "dulce_de_leche__",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "tecito_de_ruda",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "twokisses2",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "kmi0396",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "andeleeandele",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "sadneycyrton",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "bardoconurbano",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "julieta___18",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "nabu3l__",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "pegasus_kween",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "eugebona",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "rorohayro",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "ariprats21",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "papudita colombiana timidona",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "melamelaluna",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "magnussssssss1111",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "pastelitodebatatams",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "maceleste23",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "rpmicaela",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "loop1104",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "mickamiminguez",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "articmonquis",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "hoshimarusan",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "sol_edad_97",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "lolipiv",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "Naii_RJ",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "na1na2na3na4",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "linosauri0",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "Rubyrid3r",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "thiaggowo",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "lulaluux_",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "Julieta9776",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "madeinfel_",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "cheli0uwu",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "Asasske",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "lubelg",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "micazc",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "chechulina",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "belube__",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "el alejo de lubelg",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "mandipom",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "l4_plastic",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "mirtu_88",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "jinn",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       },
       {
             "name": "gabrielasok",
-            "avatar": ""
+            "avatar": "",
+            "message": ""
       }
-];
-
-    const genericMessages = [
-      "Feliz cumple y perdón por esta experiencia digital.",
-      "Puse plata y ahora exijo aparecer en créditos.",
-      "Con cariño, pero sin solemnidad.",
-      "Participé de esta operación.",
-      "Aporte económico y moral.",
-      "No fue una estafa, fue afecto.",
-      "Que sean muchos más, lamentablemente para todos.",
-      "Presente en esta maniobra papudom.",
-      "Feliz cumple, seguí siendo icono del caos.",
-      "Esto cuenta como demostración de afecto adulto."
 ];
 
     const challenges = [
@@ -939,13 +1062,16 @@
     function loadChallenge() {
       const item = challenges[currentChallenge];
       answerWasAccepted = false;
+
       challengeKicker.textContent = `Desafío ${currentChallenge + 1}/3`;
       challengeTitle.textContent = item.title;
       challengeQuestion.textContent = item.question;
       feedback.textContent = "";
       feedback.className = "feedback";
+
       nextChallengeBtn.classList.remove("visible");
       nextChallengeBtn.textContent = currentChallenge === challenges.length - 1 ? "Veredicto final" : "Siguiente desgracia";
+
       options.innerHTML = "";
 
       item.options.forEach((option, index) => {
@@ -970,17 +1096,20 @@
         feedback.textContent = item.ok;
         feedback.className = "feedback ok";
         nextChallengeBtn.classList.add("visible");
+
         document.querySelectorAll(".option").forEach(btn => btn.disabled = true);
         return;
       }
 
       clickedButton.classList.add("wrong");
+
       const roasts = [
         "Incorrecto. El multiverso sintió vergüenza ajena.",
         "No. Pero se valora el intento, ponele.",
         "Respuesta rechazada por el comité papudom.",
         "Casi. Bueno, no. Pero casi emocionalmente."
       ];
+
       feedback.textContent = roasts[Math.floor(Math.random() * roasts.length)];
       feedback.className = "feedback bad";
     }
@@ -989,6 +1118,7 @@
       if (!answerWasAccepted) return;
 
       currentChallenge++;
+
       if (currentChallenge < challenges.length) {
         loadChallenge();
       } else {
@@ -1013,6 +1143,16 @@
       return "@" + name;
     }
 
+    function getParticipantMessage(person) {
+      const message = person.message || person.mesage || "";
+
+      if (message.trim()) {
+        return message;
+      }
+
+      return "Mensaje pendiente de carga. El área administrativa del cariño está trabajando en ello.";
+    }
+
     function createAvatarElement(person, small = false) {
       const avatar = document.createElement(person.avatar ? "img" : "span");
       avatar.className = small ? (person.avatar ? "node-photo" : "node-initial") : "avatar";
@@ -1020,6 +1160,7 @@
       if (person.avatar) {
         avatar.src = person.avatar;
         avatar.alt = displayName(person.name);
+
         avatar.onerror = () => {
           const fallback = document.createElement("span");
           fallback.className = small ? "node-initial" : "avatar";
@@ -1033,13 +1174,87 @@
       return avatar;
     }
 
+    function estimateNodeSize(person) {
+      const textLength = displayName(person.name).length;
+
+      const width = Math.min(
+        300,
+        Math.max(142, 78 + textLength * 7.5)
+      );
+
+      return {
+        width,
+        height: 54
+      };
+    }
+
+    function rectanglesOverlap(a, b, margin = 16) {
+      return !(
+        a.right + margin < b.left ||
+        a.left - margin > b.right ||
+        a.bottom + margin < b.top ||
+        a.top - margin > b.bottom
+      );
+    }
+
+    function findFreePosition(size, placed, containerWidth, containerHeight) {
+      const padding = 38;
+
+      for (let attempt = 0; attempt < 1200; attempt++) {
+        const x = padding + Math.random() * (containerWidth - padding * 2);
+        const y = padding + Math.random() * (containerHeight - padding * 2);
+
+        const rect = {
+          left: x - size.width / 2,
+          right: x + size.width / 2,
+          top: y - size.height / 2,
+          bottom: y + size.height / 2
+        };
+
+        const isInside =
+          rect.left > padding &&
+          rect.right < containerWidth - padding &&
+          rect.top > padding &&
+          rect.bottom < containerHeight - padding;
+
+        if (!isInside) continue;
+
+        const collides = placed.some(existing => rectanglesOverlap(rect, existing));
+
+        if (!collides) {
+          placed.push(rect);
+          return { x, y };
+        }
+      }
+
+      /*
+        Plan B: si no encuentra lugar perfecto, lo manda igual a una zona random.
+        Con el min-height alto casi nunca debería pasar.
+      */
+      return {
+        x: padding + Math.random() * (containerWidth - padding * 2),
+        y: padding + Math.random() * (containerHeight - padding * 2)
+      };
+    }
+
     function buildConstellation() {
       constellation.innerHTML = "";
+
+      const placed = [];
+      const containerWidth = constellation.clientWidth;
+      const containerHeight = constellation.clientHeight;
 
       participants.forEach((person, index) => {
         const node = document.createElement("span");
         node.className = "node";
         node.style.setProperty("--delay", (seededRandom(index + 10) * 2.4).toFixed(2) + "s");
+
+        const size = estimateNodeSize(person);
+        const position = findFreePosition(size, placed, containerWidth, containerHeight);
+
+        node.style.left = position.x + "px";
+        node.style.top = position.y + "px";
+        node.style.width = size.width + "px";
 
         const avatar = createAvatarElement(person, true);
 
@@ -1050,11 +1265,9 @@
         node.appendChild(avatar);
         node.appendChild(name);
 
-        const msg = genericMessages[index % genericMessages.length];
-
         node.addEventListener("mouseenter", () => {
           tooltipName.textContent = displayName(person.name);
-          tooltipMsg.textContent = msg;
+          tooltipMsg.textContent = getParticipantMessage(person);
           tooltipAvatar.innerHTML = "";
 
           if (person.avatar) {
@@ -1074,9 +1287,10 @@
 
         node.addEventListener("mousemove", (event) => {
           const padding = 18;
-          const tooltipWidth = 300;
+          const tooltipWidth = 340;
           const x = Math.min(event.clientX + 18, window.innerWidth - tooltipWidth - padding);
-          const y = Math.min(event.clientY + 18, window.innerHeight - 110);
+          const y = Math.min(event.clientY + 18, window.innerHeight - 120);
+
           tooltip.style.left = x + "px";
           tooltip.style.top = y + "px";
         });
@@ -1098,8 +1312,19 @@
     nextChallengeBtn.addEventListener("click", nextChallenge);
 
     creditsBtn.addEventListener("click", () => {
-      buildConstellation();
       showScreen(creditsScreen);
+
+      /*
+        Este pequeño delay permite que la pantalla de créditos ya tenga tamaño real
+        antes de calcular posiciones. Es el equivalente frontend de "dejalo respirar".
+      */
+      setTimeout(buildConstellation, 60);
+    });
+
+    window.addEventListener("resize", () => {
+      if (creditsScreen.classList.contains("active")) {
+        buildConstellation();
+      }
     });
   </script>
 </body>
