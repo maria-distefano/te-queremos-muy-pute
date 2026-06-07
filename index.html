@@ -1680,9 +1680,15 @@
         mouseY = e.clientY - rect.top;
       });
 
-      const cw = constellation.clientWidth;
-      const ch = constellation.clientHeight;
       const pad = window.innerWidth <= 720 ? 22 : 42;
+      const cw = constellation.clientWidth;
+      const nodeCount = participants.length + timidonas.length;
+
+      // Set height first so ch is correct when positioning nodes
+      constellation.style.minHeight = Math.max(500, nodeCount * 14) + pad * 2 + "px";
+      void constellation.offsetHeight; // force reflow
+
+      const ch = constellation.clientHeight;
       const aw = Math.max(260, cw - pad * 2);
       const ah = Math.max(400, ch - pad * 2);
 
@@ -1713,7 +1719,7 @@
       }));
 
       timidonas.forEach((person, i) => {
-        const el = createTimidonaNode(person);
+        const el = createTimidonaNode();
         constellation.appendChild(el);
 
         const ci = i % clusterCount;
@@ -1729,8 +1735,6 @@
         n.el.style.top = n.y + "px";
         n.el.classList.add("is-positioned");
       });
-
-      constellation.style.minHeight = Math.max(500, allNodes.length * 14) + pad * 2 + "px";
 
       const N = allNodes.length;
       for (let i = 0; i < N; i++) {
