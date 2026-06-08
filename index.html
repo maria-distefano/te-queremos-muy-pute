@@ -625,7 +625,7 @@
       </div>
       <p class="tiny">
         Si el rituals no suena por culpa del navegador:
-        <a class="music-fallback" href="https://music.youtube.com/watch?v=kZzewUNTwuY&si=z4RZmFVgNUHe90H8" target="_blank" rel="noreferrer">abrí la canción acá</a>.
+        <a class="music-fallback" href="https://music.youtube.com/watch?v=kZzewUNTwuY&si=3OGijsOUMSsbmEg9&t=2" target="_blank" rel="noreferrer">abrí la canción acá</a>.
       </p>
     </section>
 
@@ -650,9 +650,9 @@
       <div id="feedback" class="feedback"></div>
       <div class="actions">
         <button id="acceptMultiBtn">Acepto lo elegido</button>
-        <button id="nextChallengeBtn">Siguiente desgracia</button>
+        <button id="nextChallengeBtn">Siguiente jocoqueada</button>
       </div>
-      <p class="tiny">Nota legal: este cuestionario no mide inteligencia, solo pertenencia al multiverso.</p>
+      <p class="tiny">Nota legal: este cuestionario no mide inteligencia, solo pertenencia al CONICET.</p>
     </section>
 
     <section id="finalScreen" class="screen">
@@ -1141,8 +1141,8 @@
       "Una fiera inquieta que me hace sembra pero me hace sembrá, pero me hace sentir MUJEEEEEERS",
       "De querer VIAJªªªªªªRRRS",
       "Es correcto, amo mal!",
-      "Te ganaste xx bizcochito",
-      "Sí mamioooorsss, tomate un mate ahora"
+      "Te ganaste 5 bizcochitoms",
+      "Sí mamioooorsss, tomate un mate ahora 🧉"
     ];
 
     const challenges = [
@@ -1169,10 +1169,10 @@
       },
       {
         type: "multi",
-        title: "CV del multiverso",
+        title: "CV del Papudo Mayors",
         question: "Seleccioná todo lo que aplica. Después tocá “Acepto lo elegido”.",
-        options: ["Casi psicóloga", "Taxista", "Stripper", "Técnico en lavarropa", "Streamerms", "Acompañante terapéutico", "Diseñador gráficoms", "Becario del CONICET"],
-        correct: [0,1,2,3,4,5,6,7]
+        options: ["Casi psicóloga", "Taxista", "Stripper", "Técnico en lavarropa", "Streamerms", "Sicario de grillos", "Acompañante terapéutico", "Diseñador gráficoms", "Becario del CONICET"],
+        correct: [0,1,2,3,4,5,6,7,8]
       },
       {
         type: "single",
@@ -1252,7 +1252,7 @@
 
       const points = document.createElement("div");
       points.className = "floating-points";
-      points.textContent = "+10 bizcochitoms";
+      points.textContent = "+5 bizcochitoms";
       points.style.setProperty("--point-x", (sourceRect.left + Math.min(150, sourceRect.width / 2)) + "px");
       points.style.setProperty("--point-y", (sourceRect.top + 4) + "px");
       document.body.appendChild(points);
@@ -1262,7 +1262,7 @@
     }
 
     function grantBizcochitoms(sourceElement) {
-      score += 10;
+      score += 5;
       updateScore();
       if (sourceElement) spawnRewardAnimation(sourceElement);
     }
@@ -1352,7 +1352,7 @@
       feedback.className = "feedback";
 
       nextChallengeBtn.classList.remove("visible");
-      nextChallengeBtn.textContent = currentChallenge === challenges.length - 1 ? "Veredicto final" : "Siguiente desgracia";
+      nextChallengeBtn.textContent = currentChallenge === challenges.length - 1 ? "Veredicto final" : "Siguiente jocoqueada";
 
       acceptMultiBtn.classList.toggle("visible", item.type === "multi");
       acceptMultiBtn.disabled = false;
@@ -1498,7 +1498,7 @@
       musicToggleBtn.textContent = "🔇 Callar página";
 
       ensurePlayerReady(() => {
-        player.loadVideoById({ videoId: "kZzewUNTwuY", startSeconds: 0 });
+        player.loadVideoById({ videoId: "kZzewUNTwuY", startSeconds: 2 });
       });
     }
 
@@ -1539,7 +1539,7 @@
     function getParticipantMessage(person) {
       const message = person.message || person.mesage || "";
       if (message.trim()) return message;
-      return "Mensaje pendiente de carga. El área administrativa del cariño está trabajando en ello.";
+      return "Mensaje pendiente de carga. El área administrativa del CONICET está trabajando en ello.";
     }
 
     function createAvatarElement(person, small = false) {
@@ -1797,7 +1797,7 @@
       setTimeout(() => {
         loadChallenge();
         showScreen(challengeScreen);
-      }, 2400);
+      }, 3400);
     });
 
     acceptMultiBtn.addEventListener("click", handleMultiAnswer);
