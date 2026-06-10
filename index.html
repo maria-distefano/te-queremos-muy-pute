@@ -382,6 +382,82 @@
       }
     }
 
+
+    .scratch-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 126px;
+      display: grid;
+      place-items: center;
+      isolation: isolate;
+      cursor: crosshair;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .scratch-card.revealed {
+      cursor: default;
+    }
+
+    .scratch-message {
+      position: relative;
+      z-index: 1;
+      padding: 10px 8px;
+      color: white;
+      text-shadow:
+        0 0 18px rgba(255,223,105,.45),
+        3px 3px 0 rgba(123,44,255,.45);
+      animation: prizePulse 1.7s ease-in-out infinite;
+    }
+
+    @keyframes prizePulse {
+      0%, 100% { transform: scale(1); filter: brightness(1); }
+      50% { transform: scale(1.025); filter: brightness(1.15); }
+    }
+
+    .scratch-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    .scratch-hint {
+      position: absolute;
+      z-index: 4;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-2deg);
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.45);
+      background: rgba(0,0,0,.32);
+      color: white;
+      font-size: clamp(15px, 2vw, 22px);
+      font-weight: 950;
+      letter-spacing: .08em;
+      text-shadow: 2px 2px 0 rgba(0,0,0,.35);
+      pointer-events: none;
+      box-shadow: 0 0 20px rgba(255,255,255,.12);
+      animation: scratchHintWiggle 1.15s ease-in-out infinite;
+    }
+
+    @keyframes scratchHintWiggle {
+      0%, 100% { transform: translate(-50%, -50%) rotate(-2deg) scale(1); }
+      50% { transform: translate(-50%, -50%) rotate(2deg) scale(1.04); }
+    }
+
+    .scratch-card.revealed .scratch-canvas,
+    .scratch-card.revealed .scratch-hint {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .42s ease;
+    }
+
     .challenge-box { margin-top: 26px; display: grid; gap: 12px; }
 
     .option {
@@ -778,7 +854,11 @@
       <p>¿Adiviná qué? Hemos llegado al final de este cuestionarioooooms, siiii.</p>
       <p>¿Cómo que no? Sí, sí. Ya nos tocamos las dos lolas, nos comimos todos los bizcochito y nos dieron tré bauleti.</p>
       <p><strong>Feli cumpleaños papudito.</strong> Estas son las papuditas mal que te aman el rollito mal.</p>
-      <div class="surprise-box">🤩 Ahora sí: buscá tu sorpresa en la puerta.. YAAA </div>
+      <div class="surprise-box scratch-card" id="scratchSurprise">
+        <div class="scratch-message">🤩 Ahora sí: buscá tu sorpresa en la puerta.. YAAA</div>
+        <canvas class="scratch-canvas" id="scratchCanvas" aria-label="Raspá para descubrir la sorpresa"></canvas>
+        <div class="scratch-hint" id="scratchHint">RASPÁ ACÁ, PAPUDOMS</div>
+      </div>
       <p>Este es un listado de algunas de las tantas papudas que te aman mal, y te agradecen por hacer que nos bañemos más seguido.</p>
       <p>Pasá la flechita por los usuarios de Twitch para ver la papudita mal detrás de este bello locurón.</p>
       <div class="actions">
@@ -1397,7 +1477,13 @@
 
     function grantBizcochitoms(sourceElement) {
       score += 5;
-      updateScore();
+      document.addEventListener("DOMContentLoaded", () => {
+      if (document.querySelector("#finalScreen")?.classList.contains("active")) {
+        setTimeout(initScratchCard, 160);
+      }
+    });
+
+    updateScore();
       if (sourceElement) spawnRewardAnimation(sourceElement);
     }
 
@@ -1594,6 +1680,7 @@
         loadChallenge();
       } else {
         showScreen(finalScreen);
+        setTimeout(initScratchCard, 160);
         playFinalTrack();
       }
     }
@@ -1924,7 +2011,13 @@
 
     startBtn.addEventListener("click", () => {
       score = 0;
-      updateScore();
+      document.addEventListener("DOMContentLoaded", () => {
+      if (document.querySelector("#finalScreen")?.classList.contains("active")) {
+        setTimeout(initScratchCard, 160);
+      }
+    });
+
+    updateScore();
       currentChallenge = 0;
       playStartTrack();
       showScreen(loadingScreen);
@@ -1953,6 +2046,12 @@
 
     setupMarquees();
     processDonSaturImage(src => { processedDonSaturSrc = src; });
+    document.addEventListener("DOMContentLoaded", () => {
+      if (document.querySelector("#finalScreen")?.classList.contains("active")) {
+        setTimeout(initScratchCard, 160);
+      }
+    });
+
     updateScore();
   </script>
 </body>
