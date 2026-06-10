@@ -466,6 +466,10 @@
       50% { transform: translate(-50%, -50%) rotate(2deg) scale(1.04); }
     }
 
+    .scratch-card:not(.revealed) .scratch-canvas {
+      pointer-events: auto;
+    }
+
     .scratch-card.revealed .scratch-canvas,
     .scratch-card.revealed .scratch-hint {
       opacity: 0;
@@ -2038,6 +2042,203 @@
 
       animFrameId = requestAnimationFrame(animateConstellation);
     }
+
+
+    // --- Raspadita ganadora: runtime estable ---
+    let scratchIsDrawing = false;
+    let scratchCardWasInitialized = false;
+
+    function initScratchCard() {
+      const card = document.querySelector("#scratchSurprise");
+      const canvas = document.querySelector("#scratchCanvas");
+      const hint = document.querySelector("#scratchHint");
+
+      if (!card || !canvas) return;
+
+      const rect = card.getBoundingClientRect();
+      if (rect.width < 20 || rect.height < 20) {
+        setTimeout(initScratchCard, 120);
+        return;
+      }
+
+      const dpr = window.devicePixelRatio || 1;
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+      canvas.style.width = rect.width + "px";
+      canvas.style.height = rect.height + "px";
+      canvas.style.display = "block";
+      canvas.style.opacity = "1";
+      canvas.style.pointerEvents = "auto";
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.globalCompositeOperation = "source-over";
+      ctx.clearRect(0, 0, rect.width, rect.height);
+
+      const gradient = ctx.createLinearGradient(0, 0, rect.width, rect.height);
+      gradient.addColorStop(0, "#f8f8ff");
+      gradient.addColorStop(0.18, "#b9b9cf");
+      gradient.addColorStop(0.42, "#ffffff");
+      gradient.addColorStop(0.68, "#9f9fba");
+      gradient.addColorStop(1, "#eeeeff");
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, rect.width, rect.height);
+
+      // Franjas diagonales para que parezca raspadita posta.
+      ctx.save();
+      ctx.globalAlpha = 0.18;
+      ctx.strokeStyle = "#5f5f78";
+      ctx.lineWidth = 9;
+      for (let x = -rect.height; x < rect.width + rect.height; x += 28) {
+        ctx.beginPath();
+        ctx.moveTo(x, rect.height);
+        ctx.lineTo(x + rect.height, 0);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // Ruido/brillitos.
+      for (let i = 0; i < 220; i++) {
+        const x = Math.random() * rect.width;
+        const y = Math.random() * rect.height;
+        const alpha = 0.08 + Math.random() * 0.24;
+        ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+        ctx.beginPath();
+        ctx.arc(x, y, Math.random() * 1.8 + 0.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.save();
+      ctx.translate(rect.width / 2, rect.height / 2);
+      ctx.rotate(-0.035);
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = "900 22px Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif";
+      ctx.strokeStyle = "rgba(255,255,255,.78)";
+      ctx.lineWidth = 5;
+      ctx.fillStyle = "rgba(45, 40, 66, .86)";
+      ctx.strokeText("RASPADITA GANADORA", 0, -10);
+      ctx.fillText("RASPADITA GANADORA", 0, -10);
+      ctx.font = "800 13px system-ui, sans-serif";
+      ctx.fillStyle = "rgba(45, 40, 66, .78)";
+      ctx.fillText("raspá para revelar el diagnóstico final", 0, 23);
+      ctx.restore();
+
+      card.classList.remove("revealed");
+      card.classList.add("scratch-ready");
+      if (hint) {
+        hint.style.display = "block";
+        hint.style.opacity = "1";
+      }
+
+      scratchCardWasInitialized = true;
+    }
+
+    function getScratchPoint(event, canvas) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+      };
+    }
+
+    function scratchAt(event) {
+      const card = document.querySelector("#scratchSurprise");
+      const canvas = document.querySelector("#scratchCanvas");
+      const hint = document.querySelector("#scratchHint");
+
+      if (!card || !canvas || card.classList.contains("revealed")) return;
+
+      if (!card.classList.contains("scratch-ready")) {
+        initScratchCard();
+      }
+
+      event.preventDefault?.();
+
+      const ctx = canvas.getContext("2d");
+      const { x, y } = getScratchPoint(event, canvas);
+
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+
+      // Brocha grande: con esto no hay que raspar hasta jubilarse.
+      ctx.beginPath();
+      ctx.arc(x, y, 34, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(x + 18, y - 12, 20, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (hint) {
+        hint.style.opacity = "0";
+        setTimeout(() => { hint.style.display = "none"; }, 180);
+      }
+
+      maybeRevealScratchCard(canvas, card);
+    }
+
+    function maybeRevealScratchCard(canvas, card) {
+      const ctx = canvas.getContext("2d");
+      const width = canvas.width;
+      const height = canvas.height;
+
+      if (!width || !height) return;
+
+      const pixels = ctx.getImageData(0, 0, width, height).data;
+      let cleared = 0;
+      let total = 0;
+
+      // Muestreo liviano, porque tampoco vamos a minar Bitcoin en la raspadita.
+      for (let i = 3; i < pixels.length; i += 64) {
+        total++;
+        if (pixels[i] < 24) cleared++;
+      }
+
+      if (cleared / total > 0.34) {
+        card.classList.add("revealed");
+        setTimeout(() => {
+          canvas.style.opacity = "0";
+          canvas.style.pointerEvents = "none";
+        }, 80);
+      }
+    }
+
+    document.addEventListener("pointerdown", (event) => {
+      const card = event.target.closest?.("#scratchSurprise");
+      if (!card) return;
+
+      const canvas = document.querySelector("#scratchCanvas");
+      if (!canvas || card.classList.contains("revealed")) return;
+
+      scratchIsDrawing = true;
+      canvas.setPointerCapture?.(event.pointerId);
+      scratchAt(event);
+    });
+
+    document.addEventListener("pointermove", (event) => {
+      if (!scratchIsDrawing) return;
+      scratchAt(event);
+    });
+
+    document.addEventListener("pointerup", () => {
+      scratchIsDrawing = false;
+    });
+
+    document.addEventListener("pointercancel", () => {
+      scratchIsDrawing = false;
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const finalScreen = document.querySelector("#finalScreen");
+      if (finalScreen?.classList.contains("active")) {
+        setTimeout(initScratchCard, 180);
+      }
+    });
+
 
     startBtn.addEventListener("click", () => {
       score = 0;
