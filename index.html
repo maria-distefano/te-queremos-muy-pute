@@ -662,12 +662,321 @@
     .constellation-legend strong { color: #ff6b9d; }
 
 
+
+    .credits-bonus-row {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) minmax(340px, 540px);
+      gap: 22px;
+      align-items: center;
+      margin: 10px 0 24px;
+    }
+
+    .credits-bonus-row .putenovio-card {
+      margin: 0;
+      width: 100%;
+      justify-self: end;
+    }
+
+    .bonus-track-btn {
+      justify-self: start;
+      width: min(430px, 100%);
+      min-height: 86px;
+      padding: 16px 20px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 79, 216, .55);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,79,216,.26), transparent 34%),
+        linear-gradient(135deg, rgba(18,16,24,.96), rgba(49,18,79,.84));
+      color: white;
+      box-shadow: 0 0 28px rgba(255,79,216,.22), inset 0 0 18px rgba(255,255,255,.035);
+      text-align: left;
+    }
+
+    .bonus-track-btn span {
+      display: inline-flex;
+      width: fit-content;
+      margin-bottom: 7px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,79,216,.18);
+      color: #ffc8f2;
+      font-size: 11px;
+      font-weight: 950;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .bonus-track-btn strong {
+      display: block;
+      color: white;
+      font-size: clamp(16px, 1.8vw, 22px);
+      line-height: 1.1;
+      text-shadow: 0 0 18px rgba(255,79,216,.38);
+    }
+
+    .bonus-track-btn:hover {
+      transform: translateY(-3px) scale(1.015);
+      box-shadow: 0 0 36px rgba(255,79,216,.40), 0 0 28px rgba(123,44,255,.20);
+    }
+
+    .roulette-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: none;
+      place-items: center;
+      padding: 22px;
+    }
+
+    .roulette-modal.open {
+      display: grid;
+    }
+
+    .roulette-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(8px);
+    }
+
+    .roulette-panel {
+      position: relative;
+      z-index: 1;
+      width: min(620px, 100%);
+      padding: 28px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(circle at 20% 8%, rgba(255,128,44,.26), transparent 30%),
+        radial-gradient(circle at 90% 80%, rgba(123,44,255,.30), transparent 32%),
+        linear-gradient(145deg, rgba(18,16,24,.98), rgba(7,7,12,.96));
+      box-shadow: 0 24px 90px rgba(0,0,0,.66), 0 0 44px rgba(255,128,44,.18);
+      text-align: center;
+    }
+
+    .roulette-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.18);
+      color: white;
+      font-size: 26px;
+      line-height: 1;
+      box-shadow: none;
+    }
+
+    .roulette-kicker {
+      display: inline-flex;
+      margin-bottom: 10px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,128,44,.42);
+      background: rgba(255,128,44,.15);
+      color: #ffd7ba;
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .roulette-panel h2 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 58px);
+      text-shadow: 4px 4px 0 rgba(255,128,44,.32);
+    }
+
+    .roulette-copy {
+      margin: 10px auto 18px;
+      max-width: 480px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .roulette-stage {
+      position: relative;
+      width: min(390px, 78vw);
+      aspect-ratio: 1;
+      margin: 14px auto 20px;
+    }
+
+    .roulette-pointer {
+      position: absolute;
+      left: 50%;
+      top: -2px;
+      z-index: 4;
+      width: 0;
+      height: 0;
+      transform: translateX(-50%);
+      border-left: 18px solid transparent;
+      border-right: 18px solid transparent;
+      border-top: 38px solid #ff7f2a;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,.45));
+    }
+
+    .roulette-wheel {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 9px solid rgba(255,255,255,.72);
+      background:
+        conic-gradient(
+          from -45deg,
+          #ff7f2a 0deg 90deg,
+          #fff0d2 90deg 180deg,
+          #7b2cff 180deg 270deg,
+          #f8f2ff 270deg 360deg
+        );
+      box-shadow:
+        0 0 0 9px rgba(255,255,255,.12),
+        0 18px 52px rgba(0,0,0,.48),
+        inset 0 0 28px rgba(0,0,0,.14);
+      transition: transform 3.2s cubic-bezier(.12,.72,.13,1);
+      overflow: hidden;
+    }
+
+    .roulette-wheel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background:
+        linear-gradient(90deg, transparent calc(50% - 1px), rgba(255,255,255,.7) calc(50% - 1px), rgba(255,255,255,.7) calc(50% + 1px), transparent calc(50% + 1px)),
+        linear-gradient(0deg, transparent calc(50% - 1px), rgba(255,255,255,.7) calc(50% - 1px), rgba(255,255,255,.7) calc(50% + 1px), transparent calc(50% + 1px));
+      pointer-events: none;
+    }
+
+    .roulette-center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 3;
+      width: 54px;
+      height: 54px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: #2f2f37;
+      border: 8px solid white;
+      box-shadow: 0 4px 14px rgba(0,0,0,.42);
+    }
+
+    .wheel-label {
+      position: absolute;
+      z-index: 2;
+      width: 118px;
+      color: #282833;
+      font-weight: 950;
+      font-size: 14px;
+      line-height: 1.02;
+      text-transform: uppercase;
+      text-align: center;
+      text-shadow: 0 1px 0 rgba(255,255,255,.62);
+      pointer-events: none;
+    }
+
+    .wheel-label-prize {
+      top: 34px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 17px;
+      text-shadow: 0 2px 0 rgba(0,0,0,.28);
+    }
+
+    .wheel-label-review {
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+    }
+
+    .wheel-label-camp {
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%) rotate(180deg);
+      color: white;
+      text-shadow: 0 2px 0 rgba(0,0,0,.32);
+    }
+
+    .wheel-label-towel {
+      left: 7px;
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+    }
+
+    .roulette-result {
+      min-height: 46px;
+      margin: 0 auto 16px;
+      padding: 12px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.07);
+      color: #ffe9ca;
+      font-size: 16px;
+      font-weight: 850;
+      line-height: 1.25;
+    }
+
+    .roulette-result.win {
+      color: var(--ok);
+      border-color: rgba(156,255,203,.42);
+      background: rgba(156,255,203,.10);
+      box-shadow: 0 0 24px rgba(156,255,203,.12);
+    }
+
+    .roulette-spin-btn {
+      width: min(360px, 100%);
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff7f2a, #ff9d35);
+      box-shadow: 0 0 30px rgba(255,128,44,.38);
+      font-size: 20px;
+      letter-spacing: .03em;
+    }
+
+    .roulette-spin-btn:disabled {
+      opacity: .72;
+      cursor: default;
+    }
+
+    @media (max-width: 820px) {
+      .credits-bonus-row {
+        grid-template-columns: 1fr;
+      }
+
+      .credits-bonus-row .putenovio-card,
+      .bonus-track-btn {
+        justify-self: stretch;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .roulette-panel {
+        padding: 22px 16px;
+      }
+
+      .wheel-label {
+        width: 98px;
+        font-size: 11px;
+      }
+
+      .wheel-label-prize {
+        font-size: 14px;
+      }
+    }
+
     .putenovio-card {
       position: relative;
       z-index: 2;
       margin: -4px 0 20px auto;
       padding: 14px 18px;
-      width: min(450px, 100%);
+      width: min(360px, 100%);
       border-radius: 22px;
       border: 1px solid rgba(95, 205, 255, .72);
       background:
@@ -676,21 +985,20 @@
       box-shadow: 0 0 28px rgba(0, 174, 255, .28), inset 0 0 18px rgba(255,255,255,.05);
       color: white;
     }
+
     .putenovio-card .putenovio-badge {
       display: inline-flex;
       width: fit-content;
-      max-width: 100%;
-      margin-bottom: 10px;
-      padding: 7px 13px;
+      margin-bottom: 8px;
+      padding: 5px 9px;
       border-radius: 999px;
       background: rgba(95,205,255,.16);
       border: 1px solid rgba(95,205,255,.42);
       color: #9ee8ff;
       font-size: 11px;
       font-weight: 950;
-      letter-spacing: .06em;
+      letter-spacing: .08em;
       text-transform: uppercase;
-      white-space: nowrap;
     }
 
     .putenovio-card strong {
@@ -700,6 +1008,7 @@
       color: #d9f7ff;
       text-shadow: 0 0 16px rgba(95,205,255,.55);
     }
+
     .putenovio-card small {
       display: block;
       color: rgba(244,240,255,.9);
@@ -758,6 +1067,315 @@
       .constellation { min-height: 2400px; padding: 16px; }
       .node { font-size: 12px; padding: 8px 10px; max-width: calc(100% - 38px); }
   
+
+    .credits-bonus-row {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) minmax(340px, 540px);
+      gap: 22px;
+      align-items: center;
+      margin: 10px 0 24px;
+    }
+
+    .credits-bonus-row .putenovio-card {
+      margin: 0;
+      width: 100%;
+      justify-self: end;
+    }
+
+    .bonus-track-btn {
+      justify-self: start;
+      width: min(430px, 100%);
+      min-height: 86px;
+      padding: 16px 20px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 79, 216, .55);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,79,216,.26), transparent 34%),
+        linear-gradient(135deg, rgba(18,16,24,.96), rgba(49,18,79,.84));
+      color: white;
+      box-shadow: 0 0 28px rgba(255,79,216,.22), inset 0 0 18px rgba(255,255,255,.035);
+      text-align: left;
+    }
+
+    .bonus-track-btn span {
+      display: inline-flex;
+      width: fit-content;
+      margin-bottom: 7px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,79,216,.18);
+      color: #ffc8f2;
+      font-size: 11px;
+      font-weight: 950;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .bonus-track-btn strong {
+      display: block;
+      color: white;
+      font-size: clamp(16px, 1.8vw, 22px);
+      line-height: 1.1;
+      text-shadow: 0 0 18px rgba(255,79,216,.38);
+    }
+
+    .bonus-track-btn:hover {
+      transform: translateY(-3px) scale(1.015);
+      box-shadow: 0 0 36px rgba(255,79,216,.40), 0 0 28px rgba(123,44,255,.20);
+    }
+
+    .roulette-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: none;
+      place-items: center;
+      padding: 22px;
+    }
+
+    .roulette-modal.open {
+      display: grid;
+    }
+
+    .roulette-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(8px);
+    }
+
+    .roulette-panel {
+      position: relative;
+      z-index: 1;
+      width: min(620px, 100%);
+      padding: 28px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(circle at 20% 8%, rgba(255,128,44,.26), transparent 30%),
+        radial-gradient(circle at 90% 80%, rgba(123,44,255,.30), transparent 32%),
+        linear-gradient(145deg, rgba(18,16,24,.98), rgba(7,7,12,.96));
+      box-shadow: 0 24px 90px rgba(0,0,0,.66), 0 0 44px rgba(255,128,44,.18);
+      text-align: center;
+    }
+
+    .roulette-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.18);
+      color: white;
+      font-size: 26px;
+      line-height: 1;
+      box-shadow: none;
+    }
+
+    .roulette-kicker {
+      display: inline-flex;
+      margin-bottom: 10px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,128,44,.42);
+      background: rgba(255,128,44,.15);
+      color: #ffd7ba;
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .roulette-panel h2 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 58px);
+      text-shadow: 4px 4px 0 rgba(255,128,44,.32);
+    }
+
+    .roulette-copy {
+      margin: 10px auto 18px;
+      max-width: 480px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .roulette-stage {
+      position: relative;
+      width: min(390px, 78vw);
+      aspect-ratio: 1;
+      margin: 14px auto 20px;
+    }
+
+    .roulette-pointer {
+      position: absolute;
+      left: 50%;
+      top: -2px;
+      z-index: 4;
+      width: 0;
+      height: 0;
+      transform: translateX(-50%);
+      border-left: 18px solid transparent;
+      border-right: 18px solid transparent;
+      border-top: 38px solid #ff7f2a;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,.45));
+    }
+
+    .roulette-wheel {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 9px solid rgba(255,255,255,.72);
+      background:
+        conic-gradient(
+          from -45deg,
+          #ff7f2a 0deg 90deg,
+          #fff0d2 90deg 180deg,
+          #7b2cff 180deg 270deg,
+          #f8f2ff 270deg 360deg
+        );
+      box-shadow:
+        0 0 0 9px rgba(255,255,255,.12),
+        0 18px 52px rgba(0,0,0,.48),
+        inset 0 0 28px rgba(0,0,0,.14);
+      transition: transform 3.2s cubic-bezier(.12,.72,.13,1);
+      overflow: hidden;
+    }
+
+    .roulette-wheel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background:
+        linear-gradient(90deg, transparent calc(50% - 1px), rgba(255,255,255,.7) calc(50% - 1px), rgba(255,255,255,.7) calc(50% + 1px), transparent calc(50% + 1px)),
+        linear-gradient(0deg, transparent calc(50% - 1px), rgba(255,255,255,.7) calc(50% - 1px), rgba(255,255,255,.7) calc(50% + 1px), transparent calc(50% + 1px));
+      pointer-events: none;
+    }
+
+    .roulette-center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 3;
+      width: 54px;
+      height: 54px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: #2f2f37;
+      border: 8px solid white;
+      box-shadow: 0 4px 14px rgba(0,0,0,.42);
+    }
+
+    .wheel-label {
+      position: absolute;
+      z-index: 2;
+      width: 118px;
+      color: #282833;
+      font-weight: 950;
+      font-size: 14px;
+      line-height: 1.02;
+      text-transform: uppercase;
+      text-align: center;
+      text-shadow: 0 1px 0 rgba(255,255,255,.62);
+      pointer-events: none;
+    }
+
+    .wheel-label-prize {
+      top: 34px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 17px;
+      text-shadow: 0 2px 0 rgba(0,0,0,.28);
+    }
+
+    .wheel-label-review {
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+    }
+
+    .wheel-label-camp {
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%) rotate(180deg);
+      color: white;
+      text-shadow: 0 2px 0 rgba(0,0,0,.32);
+    }
+
+    .wheel-label-towel {
+      left: 7px;
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+    }
+
+    .roulette-result {
+      min-height: 46px;
+      margin: 0 auto 16px;
+      padding: 12px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.07);
+      color: #ffe9ca;
+      font-size: 16px;
+      font-weight: 850;
+      line-height: 1.25;
+    }
+
+    .roulette-result.win {
+      color: var(--ok);
+      border-color: rgba(156,255,203,.42);
+      background: rgba(156,255,203,.10);
+      box-shadow: 0 0 24px rgba(156,255,203,.12);
+    }
+
+    .roulette-spin-btn {
+      width: min(360px, 100%);
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff7f2a, #ff9d35);
+      box-shadow: 0 0 30px rgba(255,128,44,.38);
+      font-size: 20px;
+      letter-spacing: .03em;
+    }
+
+    .roulette-spin-btn:disabled {
+      opacity: .72;
+      cursor: default;
+    }
+
+    @media (max-width: 820px) {
+      .credits-bonus-row {
+        grid-template-columns: 1fr;
+      }
+
+      .credits-bonus-row .putenovio-card,
+      .bonus-track-btn {
+        justify-self: stretch;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .roulette-panel {
+        padding: 22px 16px;
+      }
+
+      .wheel-label {
+        width: 98px;
+        font-size: 11px;
+      }
+
+      .wheel-label-prize {
+        font-size: 14px;
+      }
+    }
+
     .putenovio-card {
       position: relative;
       z-index: 2;
@@ -896,10 +1514,17 @@
         <p>Estas son las papuditas que te aman mal y se organizaron una organización para que tengas un cumple muy especials. Te desean feliz cumple y, lamentablemente, probablemente por muchos más.</p>
         <p class="muted">Pasá el cursor por los nodos violetas para ver los mensajes de las papudas.</p>
       </div>
+      <div class="credits-bonus-row">
+        <button id="bonusTrackBtn" class="bonus-track-btn" type="button">
+          <span>Bonus track</span>
+          <strong>Esto todavía no termina, somos intensas</strong>
+        </button>
+
       <div class="putenovio-card">
-        <span class="putenovio-badge">Putenovio oficial · ayuda desde las sombras ·</span>
+        <span class="putenovio-badge">Putenovio oficial · ayuda desde las sombras</span>
         <strong>@Putenovio</strong>
         <small>Feliz cumple mi amor, te amo mals</small>
+      </div>
       </div>
 
       <div id="constellation" class="constellation">
@@ -907,11 +1532,41 @@
       </div>
       <p class="constellation-legend muted">Los nodos <strong>rosados</strong> que huyen del mouse son las Papudas Timídonas 💜</p>
       <div class="credits-footer">
-        Página hecha por el dúo dinámico de la victoria, la doble M: <strong>Maty y Maru</strong> · <strong>@meolvidemicuenta1 & @HoshiMaruSan jaja</strong>
+        Página hecha por el dúo dinámico de la victoria: <strong>Maty y Maru</strong> · <strong>@HoshiMaruSan</strong>
       </div>
 
     </section>
   </main>
+
+
+  <div id="bonusRouletteModal" class="roulette-modal" aria-hidden="true">
+    <div class="roulette-backdrop" id="bonusRouletteBackdrop"></div>
+
+    <div class="roulette-panel" role="dialog" aria-modal="true" aria-labelledby="rouletteTitle">
+      <button id="closeBonusRouletteBtn" class="roulette-close" type="button" aria-label="Cerrar ruleta">×</button>
+
+      <div class="roulette-kicker">Bonus track papudoms</div>
+      <h2 id="rouletteTitle">Ruleta de Temu emocional</h2>
+      <p class="roulette-copy">Tres giros. Cero garantías. Mucha intensidad administrativa.</p>
+
+      <div class="roulette-stage">
+        <div class="roulette-pointer"></div>
+
+        <div id="rouletteWheel" class="roulette-wheel">
+          <span class="wheel-label wheel-label-prize">Premio sorpresa</span>
+          <span class="wheel-label wheel-label-review">Una revisioms<br>con Tinoms</span>
+          <span class="wheel-label wheel-label-camp">Entrada al<br>campamento de<br>Cris Morena</span>
+          <span class="wheel-label wheel-label-towel">Toallita para<br>la lola sudada</span>
+          <div class="roulette-center"></div>
+        </div>
+      </div>
+
+      <div id="rouletteResult" class="roulette-result">Primer giro obligatorio: campamento de Cris Morena. El lore exige sacrificios.</div>
+
+      <button id="spinRouletteBtn" class="roulette-spin-btn" type="button">STOP / Girar 1 de 3</button>
+    </div>
+  </div>
+
 
   <div id="tooltip" class="tooltip">
     <div class="avatar" id="tooltipAvatar">@</div>
@@ -1516,6 +2171,18 @@
         initScratchCard();
       }
     }, 500);
+
+
+    document.querySelector("#bonusTrackBtn")?.addEventListener("click", openBonusRoulette);
+    document.querySelector("#spinRouletteBtn")?.addEventListener("click", spinBonusRoulette);
+    document.querySelector("#closeBonusRouletteBtn")?.addEventListener("click", closeBonusRoulette);
+    document.querySelector("#bonusRouletteBackdrop")?.addEventListener("click", closeBonusRoulette);
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeBonusRoulette();
+      }
+    });
 
     updateScore();
       if (sourceElement) spawnRewardAnimation(sourceElement);
@@ -2240,6 +2907,108 @@
     });
 
 
+
+    const rouletteSequence = [
+      {
+        label: "Entrada al campamento de Cris Morena",
+        optionIndex: 2,
+        detail: "Primer giro: Entrada al campamento de Cris Morena. No preguntes, el multiverso firmó el permiso."
+      },
+      {
+        label: "Una toallita para la lola sudada",
+        optionIndex: 3,
+        detail: "Segundo giro: una toallita para la lola sudada. Higiene, ante todo."
+      },
+      {
+        label: "Premio sorpresa",
+        optionIndex: 0,
+        detail: "Tercer giro: PREMIO SORPRESA. Ahora sí, esto era lo que había que desbloquear."
+      }
+    ];
+
+    const rouletteOptionCenters = [0, 90, 180, 270];
+    let rouletteSpinIndex = 0;
+    let rouletteIsSpinning = false;
+    let rouletteRotation = 0;
+
+    function openBonusRoulette() {
+      const modal = document.querySelector("#bonusRouletteModal");
+      const wheel = document.querySelector("#rouletteWheel");
+      const result = document.querySelector("#rouletteResult");
+      const spinButton = document.querySelector("#spinRouletteBtn");
+
+      if (!modal || !wheel || !result || !spinButton) return;
+
+      rouletteSpinIndex = 0;
+      rouletteIsSpinning = false;
+      rouletteRotation = 0;
+      wheel.style.transition = "none";
+      wheel.style.transform = "rotate(0deg)";
+
+      requestAnimationFrame(() => {
+        wheel.style.transition = "transform 3.2s cubic-bezier(.12,.72,.13,1)";
+      });
+
+      result.classList.remove("win");
+      result.textContent = "Primer giro obligatorio: campamento de Cris Morena. El lore exige sacrificios.";
+      spinButton.disabled = false;
+      spinButton.textContent = "STOP / Girar 1 de 3";
+
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeBonusRoulette() {
+      const modal = document.querySelector("#bonusRouletteModal");
+      if (!modal) return;
+
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    function spinBonusRoulette() {
+      if (rouletteIsSpinning || rouletteSpinIndex >= rouletteSequence.length) return;
+
+      const wheel = document.querySelector("#rouletteWheel");
+      const result = document.querySelector("#rouletteResult");
+      const spinButton = document.querySelector("#spinRouletteBtn");
+
+      if (!wheel || !result || !spinButton) return;
+
+      const current = rouletteSequence[rouletteSpinIndex];
+      const center = rouletteOptionCenters[current.optionIndex];
+
+      rouletteIsSpinning = true;
+      result.classList.remove("win");
+      result.textContent = "Girando... si sale 0% off denunciamos a Temu.";
+
+      const targetRotation = ((rouletteSpinIndex + 4) * 1080) - center;
+      rouletteRotation = targetRotation;
+      wheel.style.transform = `rotate(${targetRotation}deg)`;
+
+      spinButton.disabled = true;
+      spinButton.textContent = "Girando papudoms...";
+
+      setTimeout(() => {
+        rouletteIsSpinning = false;
+        result.textContent = current.detail;
+
+        if (current.optionIndex === 0) {
+          result.classList.add("win");
+        }
+
+        rouletteSpinIndex++;
+
+        if (rouletteSpinIndex < rouletteSequence.length) {
+          spinButton.disabled = false;
+          spinButton.textContent = `STOP / Girar ${rouletteSpinIndex + 1} de 3`;
+        } else {
+          spinButton.disabled = true;
+          spinButton.textContent = "Premio desbloqueado";
+        }
+      }, 3300);
+    }
+
     startBtn.addEventListener("click", () => {
       score = 0;
       document.addEventListener("DOMContentLoaded", () => {
@@ -2256,6 +3025,18 @@
         initScratchCard();
       }
     }, 500);
+
+
+    document.querySelector("#bonusTrackBtn")?.addEventListener("click", openBonusRoulette);
+    document.querySelector("#spinRouletteBtn")?.addEventListener("click", spinBonusRoulette);
+    document.querySelector("#closeBonusRouletteBtn")?.addEventListener("click", closeBonusRoulette);
+    document.querySelector("#bonusRouletteBackdrop")?.addEventListener("click", closeBonusRoulette);
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeBonusRoulette();
+      }
+    });
 
     updateScore();
       currentChallenge = 0;
@@ -2300,6 +3081,18 @@
         initScratchCard();
       }
     }, 500);
+
+
+    document.querySelector("#bonusTrackBtn")?.addEventListener("click", openBonusRoulette);
+    document.querySelector("#spinRouletteBtn")?.addEventListener("click", spinBonusRoulette);
+    document.querySelector("#closeBonusRouletteBtn")?.addEventListener("click", closeBonusRoulette);
+    document.querySelector("#bonusRouletteBackdrop")?.addEventListener("click", closeBonusRoulette);
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeBonusRoulette();
+      }
+    });
 
     updateScore();
   </script>
