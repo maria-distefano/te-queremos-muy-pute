@@ -399,6 +399,21 @@
       cursor: default;
     }
 
+    .scratch-card:not(.scratch-ready) .scratch-message {
+      opacity: 0;
+    }
+
+    .scratch-card:not(.scratch-ready) .scratch-canvas {
+      background:
+        repeating-linear-gradient(
+          -35deg,
+          #f4f4fb 0 8px,
+          #b8b8cc 8px 16px,
+          #e2e2ef 16px 24px
+        );
+    }
+
+
     .scratch-message {
       position: relative;
       z-index: 1;
@@ -1440,6 +1455,12 @@
       document.querySelectorAll(".screen").forEach(section => section.classList.remove("active"));
       screen.classList.add("active");
       window.scrollTo({ top: 0, behavior: "smooth" });
+
+      if (screen && screen.id === "finalScreen") {
+        requestAnimationFrame(() => {
+          setTimeout(initScratchCard, 180);
+        });
+      }
     }
 
     function randomFrom(list) {
@@ -1482,6 +1503,15 @@
         setTimeout(initScratchCard, 160);
       }
     });
+
+
+    setInterval(() => {
+      const finalScreen = document.querySelector("#finalScreen");
+      const card = document.querySelector("#scratchSurprise");
+      if (finalScreen?.classList.contains("active") && card && !card.classList.contains("scratch-ready")) {
+        initScratchCard();
+      }
+    }, 500);
 
     updateScore();
       if (sourceElement) spawnRewardAnimation(sourceElement);
@@ -2017,6 +2047,15 @@
       }
     });
 
+
+    setInterval(() => {
+      const finalScreen = document.querySelector("#finalScreen");
+      const card = document.querySelector("#scratchSurprise");
+      if (finalScreen?.classList.contains("active") && card && !card.classList.contains("scratch-ready")) {
+        initScratchCard();
+      }
+    }, 500);
+
     updateScore();
       currentChallenge = 0;
       playStartTrack();
@@ -2051,6 +2090,15 @@
         setTimeout(initScratchCard, 160);
       }
     });
+
+
+    setInterval(() => {
+      const finalScreen = document.querySelector("#finalScreen");
+      const card = document.querySelector("#scratchSurprise");
+      if (finalScreen?.classList.contains("active") && card && !card.classList.contains("scratch-ready")) {
+        initScratchCard();
+      }
+    }, 500);
 
     updateScore();
   </script>
